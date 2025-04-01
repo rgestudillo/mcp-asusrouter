@@ -95,3 +95,11 @@ async def get_network_status() -> Dict[str, Any]:
         response = await client.get("http://0.0.0.0:8000/network")
         response.raise_for_status()  # Raise an exception for HTTP errors
         return response.json()
+
+
+@mcp.tool()
+async def get_parental_control() -> Dict[str, Any]:
+    """Get parental control settings from ASUS Router API"""
+    async with httpx.AsyncClient() as client:
+        response = await client.get("http://0.0.0.0:8000/parental-control")
+        return response.json()
