@@ -1,5 +1,4 @@
-fastapi
 uvicorn
-pydantic
 aiohttp
 asusrouter
+fastmcp
