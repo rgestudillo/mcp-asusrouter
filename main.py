@@ -56,3 +56,42 @@ async def get_wlan_status() -> Dict[str, Any]:
     async with httpx.AsyncClient() as client:
         response = await client.get("http://0.0.0.0:8000/wlan")
         return response.json()
+
+
+@mcp.tool()
+async def get_network_status() -> Dict[str, Any]:
+    """
+    Retrieve comprehensive network status from the ASUS Router API.
+    
+    This function fetches detailed network statistics across different 
+    network interfaces and connection types, including:
+    - WAN (Wide Area Network)
+    - Wired connections
+    - Wireless networks (2.4 GHz and 5 GHz bands)
+    - Bridge connections
+    - USB network interfaces
+
+    Returns:
+        Dict[str, Any]: A nested dictionary containing network statistics with the following structure:
+        {
+            "wan": {
+                "rx": int,          # Received bytes
+                "tx": int,          # Transmitted bytes
+                "rx_speed": float,  # Current receive speed
+                "tx_speed": float   # Current transmit speed
+            },
+            "wired": { ... },       # Similar structure to WAN
+            "2ghz": { ... },        # Wireless 2.4 GHz band statistics
+            "5ghz": { ... },        # Wireless 5 GHz band statistics
+            "bridge": { ... },      # Bridge connection statistics
+            "usb": { ... }          # USB network interface statistics
+        }
+
+    Raises:
+        httpx.RequestError: If there's a network-related error connecting to the router
+        httpx.HTTPStatusError: If the router returns an error status code
+    """
+    async with httpx.AsyncClient() as client:
+        response = await client.get("http://0.0.0.0:8000/network")
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return response.json()

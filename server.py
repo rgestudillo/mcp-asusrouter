@@ -131,7 +131,37 @@ async def reboot_router() -> Dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"Error rebooting router: {str(e)}")
     
 
+@app.get("/network")
+async def get_network_status() -> Dict[str, Any]:
+    try:
+        # Create an aiohttp session
+        async with aiohttp.ClientSession() as session:
+            router = AsusRouter(
+                hostname=ROUTER_CONFIG["hostname"],
+                username=ROUTER_CONFIG["username"],
+                password=ROUTER_CONFIG["password"],
+                use_ssl=ROUTER_CONFIG["use_ssl"],
+                session=session
+            )
 
+            try:
+                # Connect to the router
+                await router.async_connect()
+                
+                # Fetch network data
+                data = await router.async_get_data(AsusData.NETWORK)
+                
+                if data is None:
+                    return {"message": "No network data available"}
+                
+                return {"network": data}
+
+            finally:
+                # Always disconnect from the router
+                await router.async_disconnect()
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
