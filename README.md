@@ -1,413 +1,169 @@
-# ASUS Router MCP
-
-This package provides a comprehensive suite of tools for interacting with ASUS routers via the FastMCP framework. It leverages the `asusrouter` Python library to enable remote monitoring and management of your ASUS Router.
-
-## Installation
-
-```bash
-pip install mcp
-pip install aiohttp
-pip install asusrouter
-```
-
-## Configuration
-
-By default, the tools are configured to connect to a router at `192.168.72.1` with the username `admin`. You can modify the `ROUTER_CONFIG` dictionary in the script to match your router's details:
-
-```python
-ROUTER_CONFIG = {
-    "hostname": "192.168.72.1",
-    "username": "admin",
-    "password": "your_password_here",
-    "use_ssl": False
-}
-```
-
-## Available Tools
-
-Below are all available tools with descriptions and numbered example prompts.
-
-### Device Information
-
-1. **get_connected_devices**
-   Retrieves information about all devices connected to your router.
-
-   Example prompt:
-   ```
-   Show me all devices connected to my network right now
-   ```
-
-2. **get_aimesh_info**
-   Gets information about your AiMesh setup and node status.
-
-   Example prompt:
-   ```
-   What's the status of my AiMesh network? Are all nodes connected?
-   ```
-
-3. **get_boottime**
-   Retrieves the router's boot time and calculates uptime.
-
-   Example prompt:
-   ```
-   How long has my router been running since the last reboot?
-   ```
-
-### Network Status
-
-4. **get_network_status**
-   Retrieves traffic statistics for all network interfaces.
-
-   Example prompt:
-   ```
-   What's my current network utilization across all interfaces?
-   ```
-
-5. **get_wan_status**
-   Gets detailed WAN (internet) connection status and configuration.
-
-   Example prompt:
-   ```
-   Show me my internet connection details and public IP address
-   ```
-
-6. **get_wlan_status**
-   Retrieves detailed wireless network configuration.
-
-   Example prompt:
-   ```
-   What are my current WiFi settings for all bands?
-   ```
-
-7. **get_guest_wifi_status**
-   Gets guest WiFi network status and configuration.
-
-   Example prompt:
-   ```
-   Are any guest networks currently enabled on my router?
-   ```
-
-8. **get_ports_status**
-   Retrieves the status of physical network ports.
-
-   Example prompt:
-   ```
-   Which physical ports on my router are currently active and what are their speeds?
-   ```
-
-9. **get_dsl_status**
-   Retrieves DSL connection status and line information for DSL routers.
-
-   Example prompt:
-   ```
-   What's my DSL connection quality and sync speed?
-   ```
-
-10. **run_speedtest**
-    Initiates a speed test directly from the router.
-
-    Example prompt:
-    ```
-    Run a speed test from my router to check my connection speed
-    ```
-
-11. **ping_host_from_router**
-    Pings a specified host from the router itself.
-
-    Example prompt:
-    ```
-    Ping google.com from my router to check connectivity
-    ```
-
-### System Performance
-
-12. **get_system_info**
-    Retrieves comprehensive system information.
-
-    Example prompt:
-    ```
-    Give me a complete system overview of my router
-    ```
-
-13. **get_cpu_ram_usage**
-    Gets CPU and RAM utilization statistics.
-
-    Example prompt:
-    ```
-    What's the current CPU and RAM usage on my router?
-    ```
-
-14. **get_temperature**
-    Retrieves temperature readings from various sensors.
-
-    Example prompt:
-    ```
-    Is my router running hot? Show me all temperature readings
-    ```
-
-15. **get_firmware_info**
-    Gets firmware version and update availability information.
-
-    Example prompt:
-    ```
-    Check if there's a firmware update available for my router
-    ```
-
-16. **check_firmware_updates**
-    Triggers a check for new firmware updates.
-
-    Example prompt:
-    ```
-    Force check for new firmware updates now
-    ```
-
-17. **start_firmware_upgrade**
-    Initiates a firmware upgrade if an update is available.
-
-    Example prompt:
-    ```
-    Upgrade my router to the latest firmware
-    ```
-
-### Network Security & Management
-
-18. **get_parental_control**
-    Retrieves parental control configuration and rule settings.
-
-    Example prompt:
-    ```
-    Show me my current parental control settings and active rules
-    ```
-
-19. **set_parental_control_global_state**
-    Enables or disables the Parental Controls feature globally.
-
-    Example prompt:
-    ```
-    Enable parental controls on my router
-    ```
-
-20. **set_parental_control_block_all**
-    Enables or disables the 'Block All Internet Access' feature.
-
-    Example prompt:
-    ```
-    Block all internet access for all devices right now
-    ```
-
-21. **get_port_forwarding**
-    Gets port forwarding rules and configuration.
-
-    Example prompt:
-    ```
-    List all my configured port forwarding rules
-    ```
-
-22. **set_port_forwarding_global_state**
-    Enables or disables Port Forwarding globally.
-
-    Example prompt:
-    ```
-    Disable all port forwarding rules temporarily
-    ```
-
-### VPN Management
-
-23. **get_vpn_config**
-    Retrieves VPN client and server configuration status.
-
-    Example prompt:
-    ```
-    Show me the status of all my VPN configurations
-    ```
-
-24. **get_vpn_fusion_status**
-    Gets VPN Fusion (VPNC) status and configurations.
-
-    Example prompt:
-    ```
-    What's the current status of my VPN Fusion profiles?
-    ```
-
-25. **control_openvpn_client**
-    Enables or disables a specific OpenVPN client profile.
-
-    Example prompt:
-    ```
-    Connect to my OpenVPN client profile #2
-    ```
-
-26. **control_openvpn_server**
-    Enables or disables a specific OpenVPN server.
-
-    Example prompt:
-    ```
-    Turn off my OpenVPN server
-    ```
-
-27. **control_wireguard_client**
-    Enables or disables a specific WireGuard client profile.
-
-    Example prompt:
-    ```
-    Connect to my WireGuard VPN #1
-    ```
-
-28. **control_wireguard_server**
-    Enables or disables a specific WireGuard server.
-
-    Example prompt:
-    ```
-    Enable my WireGuard server to allow remote connections
-    ```
-
-29. **control_vpn_fusion_client**
-    Enables or disables a VPN Fusion client profile.
-
-    Example prompt:
-    ```
-    Disconnect from VPN Fusion profile unit 1
-    ```
-
-### WiFi Management
-
-30. **set_wifi_settings**
-    Configures wireless network settings.
-
-    Example prompt:
-    ```
-    Change my 5GHz WiFi password to "NewSecurePassword2023!"
-    ```
-
-31. **set_wifi_radio_state**
-    Enables or disables the radio for a specific WiFi band.
-
-    Example prompt:
-    ```
-    Turn off my 2.4GHz WiFi radio but leave 5GHz on
-    ```
-
-### System Maintenance
-
-32. **reboot_router**
-    Initiates a router reboot.
-
-    Example prompt:
-    ```
-    Reboot my router now
-    ```
-
-33. **rebuild_aimesh_network**
-    Triggers a rebuild of the AiMesh network.
-
-    Example prompt:
-    ```
-    My mesh network seems unstable, rebuild the AiMesh network
-    ```
-
-34. **restart_dns_service**
-    Restarts the DNS service on the router.
-
-    Example prompt:
-    ```
-    I'm having DNS issues, restart the DNS service
-    ```
-
-35. **restart_httpd_service**
-    Restarts the router's web server.
-
-    Example prompt:
-    ```
-    The router admin page is sluggish, restart the HTTPD service
-    ```
-
-### LED & Lighting Control
-
-36. **get_led_status**
-    Gets router LED status information.
-
-    Example prompt:
-    ```
-    Are my router LED lights currently on or off?
-    ```
-
-37. **set_led_state**
-    Turns router LEDs on or off.
-
-    Example prompt:
-    ```
-    Turn off all the LED lights on my router for the night
-    ```
-
-38. **set_aura_lighting**
-    Controls ASUS AURA RGB lighting effects.
-
-    Example prompt:
-    ```
-    Set my router RGB lighting to static red at 80% brightness
-    ```
-
-### Advanced Tools
-
-39. **get_devicemap**
-    Gets comprehensive device map information (raw data).
-
-    Example prompt:
-    ```
-    Show me the detailed devicemap data from my router
-    ```
-
-40. **get_router_flags**
-    Gets internal router flags and states.
-
-    Example prompt:
-    ```
-    Show me all internal router flags for debugging
-    ```
-
-41. **get_vpn_fusion_client_list_raw**
-    Gets the raw VPN Fusion client list string.
-
-    Example prompt:
-    ```
-    Show me the raw VPN Fusion client list configuration string
-    ```
-
-## Example Usage in Code
-
-```python
-from mcp.server.fastmcp import FastMCP
-import asyncio
-
-# Initialize the MCP server
-mcp = FastMCP("Asus Router MCP Server", dependencies=["aiohttp", "asusrouter"])
-
-# Define the tools as in the main script
-
-# Run the server
-if __name__ == "__main__":
-    # Test a specific tool
-    async def test_connected_devices():
-        result = await get_connected_devices()
-        print(result)
-    
-    # Run the test
-    asyncio.run(test_connected_devices())
-    
-    # Or run the full MCP server
-    # mcp.run()
-```
-
-## Security Considerations
-
-- This script stores your router credentials in plain text. Consider implementing a more secure credential management approach for production.
-- All tools execute commands on your router. Be cautious when using tools that modify settings or reboot the device.
-- Some operations may cause temporary network disruptions or service interruptions.
-
-## Contributions
-
-Feel free to extend this set of tools with additional functionality. The `asusrouter` library offers many more capabilities that could be exposed through additional MCP tools.
-
-## License
-
-This script is provided as-is under the MIT license.
+# Asus Router MCP Server
+
+This MCP server exposes **all** available functionalities of the [asusrouter](https://github.com/kennedyshead/asusrouter) Python library, allowing you to control and monitor your Asus router via Model Context Protocol (MCP) tools.
+
+## Features
+
+Below is a comprehensive list of all functionalities available via the AsusRouter MCP server, categorized by type with example prompts for testing.
+
+## Table of Contents
+- [Data Retrieval (Status/Info)](#data-retrieval-statusinfo)
+- [Actions (State/Control)](#actions-statecontrol)
+- [Port Forwarding Management](#port-forwarding-management)
+- [Identity & Connection](#identity--connection)
+- [WLAN Control](#wlan-control)
+- [VPN Management](#vpn-management)
+- [Parental Control](#parental-control)
+
+## Data Retrieval (Status/Info)
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **aimesh**                   | Get AiMesh topology and status                                   | "Show me my AiMesh network status"                  |
+| **aura**                     | Get Aura RGB lighting status                                    | "What is the current Aura RGB lighting status?"     |
+| **boottime**                 | Get router boot time                                            | "When was my router last rebooted?"                 |
+| **clients**                  | List all connected devices                                      | "Show me all devices connected to my network"       |
+| **cpu**                      | Get CPU usage statistics                                        | "What is the current CPU usage on my router?"       |
+| **devicemap**                | Get device map information                                      | "Show me the device map for my router"              |
+| **dsl**                      | Get DSL line status                                             | "What is the DSL line status?"                      |
+| **firmware**                 | Get firmware version and update status                          | "What firmware version is my router running?"       |
+| **firmware_note**            | Get firmware release notes                                      | "Show me the latest firmware release notes"         |
+| **flags**                    | Get router status flags                                         | "Show me all router status flags"                   |
+| **gwlan**                    | Get guest WLAN information                                      | "Show me guest WiFi details"                        |
+| **led**                      | Get LED status                                                  | "Are the router LEDs on or off?"                    |
+| **network**                  | Get network statistics                                          | "Show me my network statistics"                     |
+| **node_info**                | Get AiMesh node information                                     | "Show me AiMesh node details"                       |
+| **openvpn**                  | Get OpenVPN status                                              | "Is OpenVPN enabled on my router?"                  |
+| **openvpn_client**           | Get OpenVPN client status                                       | "Show me OpenVPN client status"                     |
+| **openvpn_server**           | Get OpenVPN server status                                       | "Show me OpenVPN server status"                     |
+| **parental_control**         | Get parental control status and rules                           | "Show me parental control settings"                 |
+| **ping**                     | Run a network ping test                                         | "Ping google.com from my router"                    |
+| **port_forwarding**          | Get port forwarding rules                                       | "List all port forwarding rules"                    |
+| **ports**                    | Get Ethernet port status                                        | "Show me the status of all Ethernet ports"          |
+| **ram**                      | Get RAM usage statistics                                        | "How much RAM is my router using?"                  |
+| **speedtest**                | Get speedtest results                                           | "Show me the latest speedtest results"              |
+| **speedtest_result**         | Get detailed speedtest result                                   | "Show me detailed speedtest results"                |
+| **sysinfo**                  | Get system information (CPU, memory, load, etc.)                | "Show me system information for my router"          |
+| **system**                   | Get system-level status                                         | "Show me system-level status"                       |
+| **temperature**              | Get temperature sensor readings                                 | "What is the temperature of my router?"             |
+| **vpnc**                     | Get VPN Fusion (VPNC) status                                    | "Show me VPN Fusion status"                         |
+| **vpnc_clientlist**          | Get VPNC client list                                            | "List all VPN Fusion clients"                       |
+| **wan**                      | Get WAN (Internet) connection status                            | "Show me my WAN connection status"                  |
+| **wireguard**                | Get WireGuard VPN status                                        | "Show me WireGuard VPN status"                      |
+| **wireguard_client**         | Get WireGuard client status                                     | "Show me WireGuard client status"                   |
+| **wireguard_server**         | Get WireGuard server status                                     | "Show me WireGuard server status"                   |
+| **wlan**                     | Get WLAN (WiFi) status and configuration                        | "Show me my WiFi settings"                          |
+
+## Actions (State/Control)
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Reboot router**            | Reboot the router                                                | "Reboot my router"                                  |
+| **Restart AiMesh**           | Restart AiMesh network                                           | "Restart my AiMesh network"                         |
+| **Rebuild AiMesh**           | Rebuild AiMesh topology                                         | "Rebuild my AiMesh network"                         |
+| **Restart Aura RGB**         | Restart Aura RGB lighting                                       | "Restart Aura RGB lighting"                         |
+| **Check firmware update**    | Check for firmware updates                                      | "Check for firmware updates"                        |
+| **Upgrade firmware**         | Upgrade router firmware                                         | "Upgrade my router firmware"                        |
+| **Restart firewall**         | Restart the firewall                                            | "Restart the firewall"                              |
+| **Restart web server**       | Restart the router's web server                                 | "Restart the router web server"                     |
+| **Restart Samba**            | Restart Samba file sharing                                      | "Restart Samba file sharing"                        |
+| **Restart WAN**              | Restart WAN (Internet) connection                               | "Restart my WAN connection"                         |
+| **Restart wireless**         | Restart all wireless interfaces                                 | "Restart all wireless interfaces"                   |
+| **Restart OpenVPN**          | Restart OpenVPN daemon                                          | "Restart OpenVPN service"                           |
+| **Restart WireGuard**        | Restart all WireGuard server interfaces                         | "Restart WireGuard server interfaces"               |
+| **Restart UPNP**             | Restart Universal Plug and Play                                 | "Restart UPNP service"                              |
+| **Restart DNS**              | Restart DNS service                                             | "Restart DNS service"                               |
+| **Restart time service**     | Restart time synchronization                                    | "Restart time synchronization service"              |
+| **Restart FTP**              | Restart FTP server                                              | "Restart FTP server"                                |
+| **Restart LEDs**             | Restart router LEDs                                             | "Restart router LEDs"                               |
+| **Restart cloud sync**       | Restart AiCloud 2.0 sync                                        | "Restart AiCloud sync"                              |
+| **Restart captive portal**   | Restart captive portal                                          | "Restart captive portal"                            |
+| **Restart DDNS**             | Restart dynamic DNS                                             | "Restart dynamic DNS"                               |
+| **Restart disk monitor**     | Restart disk monitor                                            | "Restart disk monitor"                              |
+| **Restart QOS**              | Restart Quality of Service                                      | "Restart QoS service"                               |
+| **Restart VPNC**             | Restart VPN Fusion                                              | "Restart VPN Fusion"                                |
+| **Restart VPND**             | Restart legacy VPN daemon                                       | "Restart legacy VPN service"                        |
+| **Restart webdav**           | Restart WebDAV service                                          | "Restart WebDAV service"                            |
+| **Restart subnet**           | Restart subnet                                                  | "Restart subnet"                                    |
+| **Restart time machine**     | Restart Time Machine backup                                     | "Restart Time Machine backup"                       |
+| **Restart TOR**              | Restart The Onion Router                                        | "Restart TOR service"                               |
+| **Restart USB idle**         | Restart USB idle service                                        | "Restart USB idle service"                          |
+| **Restart WPS**              | Restart WPS service                                             | "Restart WPS service"                               |
+| **Restart router boost**     | Restart router boost                                            | "Restart router boost"                              |
+| **Restart net**              | Restart all wired interfaces                                    | "Restart all wired interfaces"                      |
+| **Restart net and phy**      | Restart all network interfaces                                  | "Restart all network interfaces"                    |
+| **Restart SNMPD**            | Restart SNMP daemon                                             | "Restart SNMP daemon"                               |
+| **Restart LPD**              | Restart Line Printer Daemon                                     | "Restart LPD service"                               |
+| **Restart settings webdav**  | Restart settings WebDAV                                         | "Restart settings WebDAV"                           |
+| **Restart WLC scan**         | Restart WLC scan                                                | "Restart WLC scan"                                  |
+| **Restart WRS**              | Restart WRS                                                     | "Restart WRS"                                       |
+| **Restart Wtfast rule**      | Restart Wtfast rule                                             | "Restart Wtfast rule"                               |
+| **Reset LED**                | Reset router LED                                                | "Reset router LED"                                  |
+| **Start Aura RGB**           | Start Aura RGB lighting                                         | "Start Aura RGB lighting"                           |
+| **Start disk format**        | Start disk format                                               | "Format attached disk"                              |
+| **Start disk scan**          | Start disk scan                                                 | "Scan attached disk"                                |
+| **Start web upgrade**        | Start firmware upgrade from web                                 | "Start firmware upgrade from web"                   |
+| **Start web update**         | Start firmware update from web                                  | "Start firmware update from web"                    |
+| **Stop Aura RGB**            | Stop Aura RGB lighting                                          | "Stop Aura RGB lighting"                            |
+| **Stop OpenVPN**             | Stop OpenVPN server                                             | "Stop OpenVPN server"                               |
+| **Stop VPNC**                | Stop VPN Fusion                                                 | "Stop VPN Fusion"                                   |
+| **Stop VPND**                | Stop legacy VPN daemon                                          | "Stop legacy VPN service"                           |
+| **Stop WRS force**           | Force stop WRS                                                  | "Force stop WRS"                                    |
+| **Update clients**           | Update client list                                              | "Update client list"                                |
+
+## Port Forwarding Management
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Add port forwarding rule** | Add a new port forwarding rule                                   | "Add a port forwarding rule for port 8080 to 192.168.1.100" |
+| **Remove port forwarding rule** | Remove a port forwarding rule                                 | "Remove the port forwarding rule for port 8080"     |
+| **Apply port forwarding rules** | Apply all port forwarding rules                               | "Apply all port forwarding rules"                   |
+
+## Identity & Connection
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Get router identity**      | Get router model, serial, firmware, etc.                         | "Show me my router's identity and model"            |
+| **Connect to router**        | Establish connection to the router                               | "Connect to my router"                              |
+| **Disconnect from router**   | Disconnect from the router                                       | "Disconnect from my router"                         |
+
+## WLAN Control
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Enable/disable WiFi**      | Turn WiFi on or off                                              | "Turn off my router's WiFi"                         |
+| **Enable/disable guest WiFi**| Control guest WiFi networks                                     | "Enable guest WiFi network"                         |
+| **Change WiFi settings**     | Update WiFi configuration                                       | "Change my WiFi channel to 6"                       |
+| **Get WiFi clients**         | List clients connected via WiFi                                 | "Show me all devices connected to WiFi"             |
+
+## VPN Management
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Enable/disable OpenVPN server** | Control OpenVPN server                                      | "Enable OpenVPN server"                             |
+| **Enable/disable WireGuard server** | Control WireGuard server                                  | "Turn on WireGuard server"                          |
+| **Get OpenVPN client status**| Check status of OpenVPN clients                                 | "Show status of all OpenVPN clients"                |
+| **Get WireGuard client status**| Check status of WireGuard clients                            | "Show status of all WireGuard clients"              |
+| **Enable/disable VPN Fusion**| Control VPN Fusion (VPNC)                                       | "Turn on VPN Fusion"                                |
+
+## Parental Control
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Enable/disable parental control** | Turn parental control on or off                          | "Enable parental control on my router"              |
+| **Add parental control rule**| Add a new parental control rule                                 | "Add parental control rule for device MAC 00:11:22:33:44:55" |
+| **Remove parental control rule** | Remove a parental control rule                             | "Remove parental control rule for device MAC 00:11:22:33:44:55" |
+| **Block all devices**        | Block internet access for all devices                           | "Block internet access for all devices temporarily"  |
+
+## LED Control
+
+| Functionality                | Description                                                      | Example Prompt                                      |
+|------------------------------|------------------------------------------------------------------|-----------------------------------------------------|
+| **Enable/disable LEDs**      | Turn router LEDs on or off                                      | "Turn off router LEDs"                              |
+| **Control Aura RGB lighting**| Manage Aura RGB lighting settings                               | "Change Aura RGB lighting to red"                   |
+
+## How to Use
+
+For each functionality, you can use the example prompt as a template to interact with the MCP server. The server will expose all of these features as MCP tools or resources, allowing you to automate, monitor, and control your Asus router programmatically.
+
+> **Note:** Some functions may require specific router models/firmware and may not be available on all devices.
