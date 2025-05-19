@@ -1,0 +1,161 @@
+\documentclass[oneside, 12pt]{book}
+\usepackage{blindtext}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{epsfig}
+\usepackage{upcebumath}  
+\usepackage{UPnotations}
+\usepackage{amssymb, graphicx, tabularx, amsmath}
+\usepackage{hyperref}
+\usepackage{rotating}
+\usepackage{indentfirst}
+\usepackage{hyperref, centernot}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\usepackage{ragged2e}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+\theoremstyle{definition}
+
+% =======================
+% EDITED THIS PART ONLY
+% =======================
+
+\theoremstyle{plain} % For Theorems, Propositions, Corollaries, Lemmas, Conjectures (italic body)
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{pro}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{con}[thm]{Conjecture}
+
+\theoremstyle{definition} % For Definitions, Examples, Remarks, Axioms, Illustrations, Algorithms, Claims (upright body)
+\newtheorem{defi}[thm]{Definition}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{axi}[thm]{Axiom}
+\newtheorem{ill}[thm]{Illustration}
+\newtheorem{algo}[thm]{Algorithm}
+\newtheorem{cla}[thm]{Claim}
+
+% =======================
+% END OF EDIT
+% =======================
+
+%%%%%%%%%%%%% for appendix %%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegray}{gray}{0.9}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{codegray},   
+    commentstyle=\color{green},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{titlesec}
+
+
+%\newenvironment{proof}{\noindent \textit{Proof.}~}{\hfill$\square$}
+%This is not needed it is already included in the amsthm package
+
+%\newcommand{\F}{\mathbb{F}}	
+
+\begin{document}
+
+\title{Utilizing Large Language Model for Network Infrastructure: A Model Context Protocol Implementation for Enhanced Router Management} %do not capitalize all
+
+\authorfirst{Refino Kashi Kyle G.}
+\authorlast{Estudillo}
+%\authorext{} \authorexttrue %make this a comment if you do not have an extension name e.g. Jr., II, III, etc.
+
+\degree{Bachelor of Science in Computer Science}
+\thesistype{Special Problem}
+\thesisdocument{Thesis}
+
+\defensedate{May, 2025} %indicate the month, day and year the research was defended
+\submitmonth{May} %indicate the month the manuscript was submitted to the CS office
+\submityear{2025} %indicate the year the manuscript was submitted to the Math Office
+
+
+\adviser{Paula S. Esplanada-Mayol, MSc}%main adviser
+\reader{Juan Dela Cruz, MSc} %thesis panel
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% highlight \bothabsenttrue if the student has only one adviser and one reader
+%% otherwise comment \bothabsenttrue and highlight \coadviser or \coreader which 
+%% ever is applicable. In this case, the package assumes either you have 1 Adviser 
+%% and 2 Readers, or 2 Advisers and 1 Reader. 
+  
+\bothabsenttrue
+
+\coadviser{""} 
+%\coadvisetrue  
+% Make the \coadvisetrue as a comment if there is no adviser
+
+%\coreader{Co-Reader's Name}  %leave this blank if there is a coadviser
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\dean{Dr. Alvin G. Roxas} 
+
+%abs{Type your abstract here.  Your abstract should have a minimum of 150 words and a maximum of 300 words.}
+
+%\acknowledge{Type your acknowledgements here. It is customary to acknowledge special assistance from extramural agencies. There is no obligation that assistance received from members of the dissertation or thesis committee be acknowledged. \medskip
+
+%Acknowledgments should be couched in terms consistent with the scholarly nature of the work. Your name and the date should not appear on this page.}
+
+%\biodatatrue 
+\beforepreface
+\tableofcontents
+
+%\newpage
+
+%\acknowledgetrue
+%\acknowledgepage
+
+\abstractpage
+\noindent This 
+\listoftables
+
+
+
+\afterpreface
+
+\include{chap1}
+\include{chap2}
+\include{chap3}
+\include{chap4}
+\include{chap5}
+\include{chap6}
+
+\include{Appendix}
+%\input{newfile}
+%\nocite*
+
+\bibliographystyle{siam}
+\bibliography{bibliog}
+%to edit your bibliography, open the BIBLIOG.BIB file.
+
+\end{document}
+

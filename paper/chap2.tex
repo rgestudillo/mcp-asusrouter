@@ -1,0 +1,424 @@
+\chapter{Review of Related Literature}
+\label{chap:compiling}
+
+This chapter surveys the existing body of knowledge pertinent to the management of network routers, the application of artificial intelligence and natural language processing, the development of conversational interfaces for technical systems, frameworks for integrating AI with hardware, the specific Model Context Protocol (MCP), the target ASUS router platform, and user experience considerations in network management. The purpose of this review is to establish the current state of research and practice in these interconnected domains, thereby contextualizing the present study. By examining the historical evolution, current approaches, inherent challenges, and technological advancements, this review identifies critical gaps in the literature, particularly concerning the usability and security of network management for non-expert users. Ultimately, this chapter lays the groundwork for the research presented herein, positioning it within the relevant academic landscape and establishing the theoretical foundations upon which it is built.
+
+\section{Network Management Interfaces}
+The interfaces through which users and administrators interact with network routers have evolved significantly since the inception of computer networking. This section examines this evolution, details contemporary approaches to router administration, highlights the persistent usability challenges associated with these interfaces, and explores the profound security implications arising from interface complexity and usability failures. Understanding this landscape is crucial for appreciating the limitations of current methods and the potential benefits of novel interaction paradigms.
+
+\subsection{Historical evolution of router management interfaces}
+The management interfaces for network routing devices have undergone a significant transformation, driven by the increasing complexity of networks and the broadening user base requiring access to configuration and monitoring tools. The origins of routers can be traced back to the Interface Message Processors (IMPs) used in the first packet-switching networks like ARPANET in 1969 \cite{smarthome_evolution}. Management of these early devices was highly specialized, typically requiring direct interaction with the hardware or rudimentary tools accessible only to trained engineers.
+
+As networking technology matured, the Command-Line Interface (CLI) emerged as the standard for professional network device configuration. Prominent examples include Cisco's IOS and Juniper's Junos OS. CLIs offer granular control and powerful scripting capabilities, making them indispensable for network professionals who require precision and efficiency. The persistence of CLI functionality, even within graphical environments like Juniper's J-Web which includes CLI tools \cite{router_guide}, underscores its enduring importance in professional settings. However, the reliance on specific syntax, complex commands, and a deep understanding of networking concepts makes CLIs largely inaccessible and intimidating for non-expert users. Recent developments include CLI tools enhanced with artificial intelligence to assist in command generation \cite{nlp_cybersecurity}, acknowledging the power of the CLI while attempting to mitigate its inherent complexity.
+
+The proliferation of broadband internet access in homes and small businesses necessitated interfaces more approachable than the CLI. This led to the widespread adoption of web-based Graphical User Interfaces (GUIs). These web UIs aimed to provide a visual means of configuring routers, replacing text commands with clickable menus, forms, and buttons. While intended to simplify management, these GUIs often served as graphical front-ends that mapped directly onto underlying CLI structures or configuration files. Consequently, they frequently retained much of the technical jargon, complex parameterization, and multi-layered menu structures, failing to fully abstract the underlying complexity for the average user, a point substantiated by numerous usability studies \cite{home_network_challenges}.
+
+More recently, the ubiquity of smartphones and tablets has driven the development of dedicated mobile applications for router management \cite{parental_controls_value}. These applications often prioritize a simplified user experience, focusing on common tasks such as checking network status, viewing connected devices, or setting up basic Wi-Fi parameters. This trend aligns with broader shifts in mobile app design towards touch and gesture-based interactions \cite{parental_controls_value} and user expectations for features like push notifications and remote accessibility \cite{parental_controls_value}. While mobile apps can offer convenience and a less intimidating interface for simple tasks, they frequently lack the comprehensive functionality of the web UI. Users needing to access advanced settings or perform complex troubleshooting may still need to revert to the traditional web interface, potentially creating a fragmented and inconsistent management experience.
+
+This historical progression from specialized tools to CLIs, web UIs, and mobile apps reveals a consistent effort to enhance usability and broaden accessibility, particularly for less technically proficient users. Each step involved increasing layers of graphical abstraction. However, this evolution has primarily focused on altering the presentation of configuration options rather than fundamentally addressing the conceptual difficulty inherent in network management tasks. The core challenge lies in translating user goals (e.g., "secure my network," "prioritize gaming traffic") into the specific technical configurations required by the router. Simply changing the interface modality from text to graphics or simplifying the layout has proven insufficient to bridge this gap effectively, as evidenced by the persistent usability problems documented in subsequent sections \cite{home_network_challenges}. The fundamental complexity of the underlying networking concepts remains a barrier that surface-level interface changes have not overcome.
+
+\subsection{Current approaches to router administration}
+Contemporary router administration relies predominantly on two user-facing methods: web-based administrative panels (Web UIs) and dedicated mobile applications. As discussed previously, Web UIs provide comprehensive access to router settings but often suffer from complexity and technical jargon, hindering usability for non-experts. Mobile applications typically offer a more streamlined experience for common tasks but may lack the depth required for advanced configuration or troubleshooting, forcing users back to the more complex Web UI \cite{parental_controls_value}.
+
+Alongside these user-facing interfaces, a significant aspect of modern router management, particularly from the perspective of Internet Service Providers (ISPs), involves remote management protocols. The most prominent standard in this area is the Broadband Forum's Technical Report 069 (TR-069), also known as the CPE WAN Management Protocol (CWMP) \cite{router_security_vulnerabilities}. TR-069 defines a SOAP/XML-based protocol enabling an Auto Configuration Server (ACS), typically operated by the ISP, to remotely manage Customer Premises Equipment (CPE), which includes devices like modems, gateways, set-top boxes, and routers \cite{router_security_vulnerabilities}.
+
+The TR-069 architecture involves the CPE, the ACS, and supporting network infrastructure like DNS and DHCP servers. The protocol defines the "southbound" interface between the ACS and CPE, while the "northbound" interface connects the ACS to the ISP's operational and business support systems (OSS/BSS) \cite{router_guide}. Communication typically occurs over HTTP or HTTPS, with the CPE initiating sessions to the ACS at predefined intervals or upon specific events \cite{router_security_vulnerabilities}. While the ACS cannot directly initiate a session, it can send a "Connection Request" to prompt the CPE to connect if immediate configuration changes are needed \cite{router_security_vulnerabilities}. Security is managed through username/password authentication (often using HTTP Digest to avoid sending passwords in plaintext) or more robustly via SSL/TLS certificates for mutual authentication \cite{router_security_vulnerabilities}.
+
+TR-069 was developed primarily to address the operational challenges and costs associated with managing large numbers of dispersed CPE devices. Compared to older protocols like the Simple Network Management Protocol (SNMP), TR-069 offers advantages for large-scale ISP deployments. While SNMP often required manual configuration of management IPs and was limited by UDP message sizes, TR-069 allows CPEs to actively discover and connect to the ACS (often via DHCP options) and supports richer data exchange via SOAP/XML over HTTP(S) \cite{router_guide}. This facilitates key functions essential for ISPs, including:
+
+\begin{enumerate}
+\item Auto-configuration: Enabling zero-touch or one-touch provisioning of new devices and service reconfiguration \cite{soho_sdn};
+
+\item Firmware/File Management: Remotely upgrading or downgrading firmware, backing up, and restoring configurations \cite{soho_sdn};
+
+\item Status and Performance Monitoring: Collecting device status, performance metrics, and logs \cite{soho_sdn}; and
+
+\item Diagnostics: Remotely executing diagnostic tests like ping, traceroute, or throughput tests (e.g., TR-143) \cite{soho_sdn}.
+\end{enumerate}
+
+These capabilities allow ISPs to reduce truck rolls and support costs, automate service delivery, perform proactive maintenance, and optimize network performance remotely \cite{router_guide}.
+
+The following table provides a comparative overview of these different management approaches:
+
+\begin{table}[htbp]
+\caption{Comparison of Router Management Interface Types}
+\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{Feature} & \textbf{CLI (Command-Line Interface)} & \textbf{Web UI (Graphical User Interface)} & \textbf{Mobile App} & \textbf{TR-069 / CWMP} \\ \hline
+Interaction Mode & Text command & Graphical point-and-click & Mobile touch & Protocol-based / programmatic \\ \hline
+Typical User & Network Professional & End-User (varying skill) & End-User (mobile focus) & ISP / Service Provider \\ \hline
+Key Features & Precise control, Scripting & Visual config, Broad features & Basic tasks, Monitoring & Remote provisioning, Diagnostics \\ \hline
+Primary Use Case & Prof. config/troubleshooting & End-user configuration & Quick access, Status checks & ISP service delivery/support \\ \hline
+Usability Challenges & Steep learning curve, Syntax errors & Jargon, Complexity, Poor design & Limited features, Oversimplified & Not directly user-facing \\ \hline
+Security Considerations & Requires expertise, Secure access needed & Web attacks, Misconfiguration & App permissions, Platform security & Secure implementation critical \\ \hline
+\end{tabular}
+\end{table}
+
+This comparison highlights a clear division in current management paradigms. User-facing interfaces like Web UIs and mobile apps prioritize direct user control but grapple with significant usability and security effectiveness issues, especially for individuals lacking technical expertise \cite{home_network_challenges}. Conversely, protocols like TR-069 are highly effective for ISP-driven automation and remote management \cite{router_guide} but are not designed for, nor do they facilitate, direct, intuitive control by the end-user. The communication flow in TR-069, initiated by the CPE primarily for the benefit of the ACS \cite{router_security_vulnerabilities}, reinforces its role as a provider-centric tool. Consequently, a significant gap exists: there is no widely adopted interface that successfully combines the comprehensive control potential of routers with the accessibility needed for average users to manage their networks effectively and securely.
+
+\subsection{Usability challenges in network configuration}
+The administration of home and small business networks via typical router interfaces presents substantial usability hurdles for the average user. These challenges stem from multiple interconnected factors, ultimately hindering effective network management and contributing to security risks.
+
+A primary barrier is the inherent complexity and technical jargon pervasive in most router configuration interfaces \cite{home_network_challenges}. Users are often confronted with parameters like IP addresses, subnet masks, default gateways, DNS server addresses, MAC filtering, port forwarding rules, and various Wi-Fi encryption acronyms (WEP, WPA, WPA2, WPA3) without adequate explanation or context \cite{home_network_challenges}. Navigating multi-layered menus to find specific settings further compounds the difficulty. This reliance on specialized terminology assumes a level of networking knowledge that most end-users do not possess.
+
+This complexity directly contributes to poor user mental models of network operation. Research indicates that even technically proficient individuals often harbor inaccurate or incomplete understandings of how their home networks are structured, how data flows, the nature of wireless boundaries, and the mechanisms behind security features \cite{home_network_challenges}. Studies employing diagramming tasks have revealed significant gaps between users' conceptualizations and the technical reality of their network setups \cite{router_logs}. This fundamental misunderstanding makes it difficult for users to make informed configuration choices, anticipate the consequences of their actions, or effectively troubleshoot problems when they arise \cite{router_logs}.
+
+Consequently, users frequently experience difficulties with setup, maintenance, and troubleshooting. The initial setup of a wireless network can be daunting, contributing to high return rates for networking equipment \cite{home_network_challenges}. Users invest significant "problem-time" attempting to resolve issues \cite{diagnostic_issues}. Diagnosing common problems like intermittent connectivity or slow internet speeds is particularly challenging without specialized tools or knowledge; existing diagnostic tools often present raw technical data requiring expert interpretation \cite{router_logs}. The increasing number of connected devices in smart homes further exacerbates management complexity, creating heterogeneous ecosystems with diverse requirements and potential points of failure \cite{iot_security_challenges}.
+
+Furthermore, existing interfaces often suffer from a lack of adequate feedback and guidance. They frequently fail to clearly communicate the implications of different configuration options, particularly regarding security \cite{home_network_challenges}. Users might select insecure settings (e.g., weaker encryption) without understanding the risks, or they may be unaware of available security features altogether. The interfaces rarely guide users towards security best practices or provide contextual help that is easily understandable.
+
+The concept of "broken expectations" also plays a role in user frustration \cite{diagnostic_issues}. Usability issues can arise when there is a mismatch between what a user expects a device or feature to do based on their intuition or marketing materials, and its actual capabilities or limitations. This mismatch can lead to confusion, incorrect usage, and dissatisfaction.
+
+Framed within the principles of usability engineering, which emphasizes effectiveness, efficiency, and satisfaction in user interactions \cite{network_complexity_survey}, current router interfaces often fall short. They frequently violate basic usability heuristics, such as providing clear system status, matching the system to the real world (using user-familiar language), offering user control and freedom, and providing help and documentation. The persistent usability problems highlight a fundamental disconnect between the design of these technical systems and the cognitive capabilities and needs of their intended end-users.
+
+These usability challenges are not merely cosmetic issues or minor inconveniences. They represent fundamental barriers rooted in the abstract and technical nature of networking concepts, the failure of interface designs to effectively translate these concepts for a non-expert audience, and the resulting inaccurate mental models users develop. This creates a detrimental cycle: the inherent complexity of networking, poorly mediated by the interface, leads to user confusion and flawed understanding, which in turn results in configuration errors, frustration, underutilization of features, and ultimately, security vulnerabilities. Breaking this cycle requires more than incremental improvements to existing interface paradigms; it suggests the need for fundamentally different approaches to mediating the interaction between the user and the network.
+
+\subsection{Security implications of interface complexity}
+The usability deficiencies inherent in router management interfaces have direct and severe consequences for network security. The complexity and lack of clarity in these interfaces are primary contributors to widespread security vulnerabilities in home and small business networks, transforming usability challenges into tangible security risks.
+
+Misconfiguration stands out as a major vulnerability vector directly linked to poor usability \cite{ai_networking}. When users find interfaces difficult to understand or navigate, they are less likely to correctly implement essential security practices \cite{home_network_challenges}. This leads to improperly configured devices that leave networks exposed to various threats \cite{home_network_challenges}. Studies consistently show that a significant percentage of home networks exhibit serious misconfigurations that could be exploited by attackers \cite{home_network_challenges}.
+
+Specific security failures commonly associated with interface complexity include:
+
+\begin{enumerate}
+\item \textbf{Weak or Default Credentials:} Users often fail to change default administrator passwords or choose weak, easily guessable passwords because the process is unclear, cumbersome, or not prominently prompted by the interface \cite{router_password_study}. Default credentials are a common target for automated attacks;
+
+\item \textbf{Insecure Wi-Fi Encryption:} Users may struggle to understand the differences between encryption standards (e.g., outdated WEP vs. modern WPA2/WPA3) or may confuse access control lists with encryption mechanisms, leading to the selection of weak or inadequate protection \cite{home_network_challenges};
+
+\item \textbf{Unpatched Firmware:} Router firmware frequently contains vulnerabilities that are discovered over time. However, the process for checking for and applying firmware updates is often buried within complex menus, poorly explained, or requires manual intervention that users neglect or are unaware of \cite{router_password_study}. Consequently, a vast number of routers operate with outdated firmware containing known, exploitable vulnerabilities \cite{router_exploitable}; Studies have found routers unpatched for years \cite{router_exploitable};
+
+\item \textbf{Improper Firewall Configuration and Open Ports:} Configuring firewall rules or managing port forwarding requires technical understanding. Complex interfaces can lead users to inadvertently disable the firewall, open unnecessary ports, or misconfigure rules, creating entry points for external attacks \cite{router_password_study}; and
+
+\item \textbf{Lack of Proper Access Control:} Implementing granular access controls for different devices or users on the network can be challenging, often leading to overly permissive settings \cite{router_password_study}.
+\end{enumerate}
+
+Routers are particularly high-value targets for attackers. They function as the central gateway for all network traffic, potentially providing visibility into all connected devices. They are often directly accessible from the internet and are known to harbor vulnerabilities due to factors like infrequent updates and complex configurations \cite{router_exploitable}. A compromised router can facilitate devastating attacks, including man-in-the-middle interception of sensitive data, redirection to malicious sites, injection of malware into network traffic, denial of service, and using the home network as a launchpad for broader attacks or inclusion in botnets like Mirai \cite{router_exploitable}. Router infections represent a significant portion of compromised devices globally \cite{router_exploitable}.
+
+Furthermore, as router management increasingly involves APIs, either for mobile apps, cloud services, or potential AI integration, the security of these APIs becomes critical. Vulnerabilities such as broken object-level authorization (allowing access to unauthorized data), improper authentication, injection flaws, or simple misconfigurations in rAPI deployment can create new avenues for exploitation \cite{secure_router}. Specific vulnerabilities have been identified and exploited in APIs used by major router vendors, including ASUS \cite{secure_router}.
+
+The security issues stemming from router interface complexity fit within a broader network security context. While end-user usability is distinct from core internet infrastructure security like BGP \cite{ai_networking} or sophisticated routing manipulation attacks \cite{secure_router}, the compromised home router represents a critical endpoint vulnerability. Millions of insecure home networks collectively increase the internet's overall attack surface and provide resources for larger-scale malicious activities \cite{router_exploitable}. Addressing security at the edge, facilitated by usable interfaces, is therefore crucial for the health of the entire ecosystem.
+
+The following table summarizes key vulnerabilities linked to management complexity:
+
+\begin{table}[htbp]
+\caption{Security Vulnerabilities Associated with Router Management Complexity}
+\begin{tabular}{|p{3cm}|p{5cm}|p{3cm}|p{2cm}|}
+\hline
+\textbf{Vulnerability Type} & \textbf{Description} & \textbf{Contributing Factors} & \textbf{Example Sources} \\ \hline
+Misconfiguration (General) & Incorrect security settings applied & Complex interface, unclear options, lack of guidance & \cite{home_network_challenges} \\ \hline
+Weak/Default Credentials & Easy-to-guess or factory passwords used & Hidden settings, lack of prompting, user apathy due to complexity & \cite{home_network_challenges} \\ \hline
+Insecure Wi-Fi Encryption & Obsolete/weak protocols selected (e.g., WEP, WPA-TKIP) & Poor explanation of options, user misunderstanding of concepts & \cite{home_network_challenges} \\ \hline
+Unpatched Firmware & Failure to apply security updates & Difficult/non-obvious update process, lack of auto-update, user unawareness & \cite{router_password_study} \\ \hline
+Open Ports/Firewall Rules & Unnecessary services exposed, overly permissive rules & Complex configuration options, lack of clear feedback on rule impact & \cite{router_password_study} \\ \hline
+API Vulnerabilities & Flaws in programmatic interfaces (authentication, authorization) & Insecure API design/implementation, lack of security focus in development & \cite{secure_router} \\ \hline
+\end{tabular}
+\end{table}
+
+The evidence strongly indicates a direct causal relationship between the documented usability failures of router management interfaces and the prevalence of critical security vulnerabilities in deployed networks. Users struggle to understand and correctly configure security settings due to interface complexity \cite{home_network_challenges}. This struggle directly leads to insecure states like the use of default credentials, weak encryption, and failure to patch known vulnerabilities \cite{router_password_study}. These insecure states are precisely what attackers exploit. Therefore, simplifying the configuration process and making security settings more accessible and understandable is not merely a matter of user convenience; it is a fundamental requirement for improving the security posture of millions of home and small business networks. Addressing the usability gap is essential for addressing the security gap.
+
+\section{Artificial Intelligence and Natural Language Processing}
+Concurrent with the persistent challenges in network management interfaces, significant advancements in Artificial Intelligence (AI), particularly in the fields of Large Language Models (LLMs) and Natural Language Processing (NLP), have opened up possibilities for entirely new interaction paradigms. These technologies possess capabilities that could potentially bridge the knowledge gap and overcome the usability barriers inherent in traditional technical interfaces. This section reviews these advancements and their relevance to the problem domain.
+
+\subsection{Advancements in large language models (LLMs)}
+Recent years have witnessed remarkable progress in the development and capabilities of LLMs. These models, trained on vast datasets of text and code, have demonstrated unprecedented abilities in understanding context, generating coherent and human-like text, summarizing complex information, and translating concepts between different levels of technicality. A key strength relevant to this research is their potential to transform dense, technical documentation or complex configuration parameters into accessible explanations tailored to a user's level of understanding.
+
+LLMs can engage in dialogue, maintain context over multiple turns, and answer follow-up questions, making them suitable candidates for powering conversational interfaces. Their ability to process natural language input and generate natural language output suggests they could serve as intermediaries, translating user intentions expressed in everyday language into the structured commands required by technical systems. This potential is already being explored in various domains, including AI-powered tools designed to help users generate complex command-line instructions from natural language descriptions \cite{nlp_cybersecurity}.
+
+However, current LLMs also have significant limitations, particularly concerning their application to hardware control. Most LLMs operate within isolated computational environments, lacking native capabilities to directly interact with or control external systems, devices, or real-time data sources. This "disconnection" from the physical world or external software systems is a major barrier to applying them directly to tasks like router management. Additionally, LLMs are known to sometimes "hallucinate" or generate factually incorrect information, which poses a significant risk when dealing with critical infrastructure configuration where precision and accuracy are paramount. Grounding LLM responses in factual data from the target system and implementing safeguards against incorrect command generation are crucial challenges.
+
+\subsection{Natural language understanding (NLU) capabilities}
+Beyond text generation, the Natural Language Understanding (NLU) component of NLP is critical for enabling conversational control. NLU focuses on the AI's ability to interpret the meaning and intent behind human language input. For managing a technical system like a router, several NLU capabilities are essential:
+
+\begin{enumerate}
+\item \textbf{Intent Recognition:} The system must accurately identify the user's goal from their natural language query. For example, it needs to differentiate between a user wanting to check the Wi-Fi password, change the password, or set up a guest network, even if the phrasing is ambiguous. This involves mapping unstructured linguistic input to predefined actions or functions within the router's capabilities;
+
+\item \textbf{Entity Extraction:} The NLU system must identify key pieces of information (entities) within the user's request, such as device names, network names (SSIDs), specific settings (e.g., "channel 6"), or time constraints ("block access after 10 PM");
+
+\item \textbf{Context Management:} Technical tasks often involve multiple steps or clarifications. The AI must maintain the conversational context to understand follow-up questions ("Okay, now make that network hidden") or references to previous statements ("Change the password for that network"). Effective context tracking is vital for coherent and efficient task completion; and
+
+\item \textbf{Ambiguity Resolution:} Natural language is inherently ambiguous. The NLU system needs mechanisms to handle ambiguity, perhaps by asking clarifying questions ("Which network are you referring to?") or by using contextual information to infer the most likely intent, ensuring that commands executed are precise and reflect the user's true goal.
+\end{enumerate}
+
+Developing robust NLU capabilities tailored to the specific domain of network management is a key requirement for a successful conversational interface.
+
+\subsection{Conversational AI for technical domains}
+Applying conversational AI to manage technical systems holds significant promise for simplifying complexity. Instead of requiring users to learn specialized terminology and navigate intricate menus, a conversational interface could allow them to state their objectives in natural language (e.g., "Help me set up a separate Wi-Fi network for visitors," "Why is my laptop's connection slow?"). This interaction model has the potential to dramatically lower the barrier to entry for configuring advanced features, troubleshooting problems, and implementing security best practices. The success of AI chatbots in customer service and e-commerce suggests users are increasingly willing to interact with automated systems for task completion \cite{parental_controls_value}.
+
+However, technical domains present unique challenges compared to informational or transactional applications. The primary challenge is ensuring accuracy and safety. An error in interpreting a command or generating an incorrect configuration for a router can have significant consequences, ranging from network outages to security breaches. Unlike providing incorrect information, executing an incorrect command has direct operational impact. Therefore, conversational systems for technical control require higher levels of precision and reliability.
+
+Other challenges include handling complex state changes (router configurations often involve multiple interdependent parameters), providing clear and unambiguous feedback to the user about actions taken and system status, and managing user expectations about the AI's capabilities and limitations. The design must carefully consider how to confirm actions before execution and how to handle errors gracefully when commands fail or are misunderstood.
+
+\subsection{Human-AI interaction patterns}
+The design of effective conversational interfaces for technical management must draw upon established principles of Human-AI Interaction (HAI). Key considerations include:
+
+\begin{enumerate}
+\item \textbf{Dialogue Management:} Structuring the conversation flow is crucial for task-oriented dialogues. This involves managing turns, handling user requests, initiating clarification dialogues when needed, providing confirmation of actions, and reporting errors or results effectively. The dialogue structure must be flexible enough to accommodate different user approaches yet structured enough to ensure tasks are completed accurately.
+
+\item \textbf{Trust and Delegation:} User trust is a critical factor when users are asked to delegate control over important systems to an AI. Building and maintaining this trust requires the AI system to demonstrate reliability, predictability, and transparency. Users need to feel confident that the AI understands their intent and will execute commands correctly and safely. Mechanisms for user oversight and the ability to easily override or undo AI actions are likely important for fostering trust.
+
+\item \textbf{Personalization:} AI offers the potential for personalized interactions. The system could adapt its language, level of explanation, and degree of autonomy based on the user's inferred technical expertise or explicitly stated preferences \cite{parental_controls_value}. For instance, it might provide more detailed guidance and confirmation steps for novice users, while allowing expert users more direct command execution.
+
+\item \textbf{Feedback and Explainability:} Providing clear feedback about what the AI is doing and why is essential. Explainable AI (XAI) principles are relevant here; the system should ideally be able to justify its recommendations (e.g., "I recommend enabling WPA3 encryption because it is more secure than WPA2") and explain the actions it takes in response to user commands.
+\end{enumerate}
+
+While the general capabilities of LLMs and NLU have advanced rapidly, their successful application to the control of complex technical systems like routers requires more than just sophisticated language processing. It demands meticulous engineering to ensure accurate intent-to-action mapping, robust dialogue management strategies capable of handling multi-step technical procedures, and careful design considerations focused on building and maintaining user trust in a context where errors carry significant consequences. The challenge shifts from merely understanding language to reliably and safely translating language into precise system operations, a task that necessitates a deep integration of AI capabilities with domain-specific knowledge and safety protocols.
+
+\section{Conversational Interfaces for Technical Systems}
+Building upon the potential of AI and NLP, this section focuses specifically on the use of conversational interfaces as a means of interacting with and managing technical systems. It examines the place of these interfaces within the broader evolution of HCI, reviews prior related implementations, considers usability factors, and delves deeper into the crucial role of user trust when delegating control.
+
+\subsection{Evolution of technical system interfaces}
+Conversational interfaces represent a significant departure from traditional methods of interacting with technical systems. The historical progression, as outlined in Section 2.1.1, moved primarily from text-based CLIs to graphical WIMP (Windows, Icons, Menus, Pointers) interfaces, including web UIs and mobile apps. While GUIs aimed for greater intuitiveness, they often retained the underlying complexity of the system.
+
+In parallel, HCI research has explored other paradigms seeking more natural or efficient interactions. Tangible User Interfaces (TUIs), where physical objects are manipulated to control digital systems, have been explored for tasks like network configuration, leveraging physical affordances \cite{home_network_challenges}. Gesture-based interfaces, common on mobile devices \cite{ai_mediated_interface}, offer direct manipulation but are typically suited for simpler commands. Voice interfaces, popularized by virtual assistants like Alexa and Siri \cite{parental_controls_value}, allow hands-free control but can struggle with complex commands, noisy environments, and discoverability.
+
+Conversational AI interfaces, leveraging text or voice input processed by LLMs, represent another step in this evolution. They aim to align interaction with the most fundamental human communication modality: natural language dialogue \cite{ai_mediated_interface}. The goal is to allow users to interact with complex systems by expressing their goals and intentions conversationally, rather than needing to learn the specific commands, menu structures, or technical parameters required by traditional interfaces. This approach holds the potential to significantly reduce the cognitive load and learning curve associated with managing sophisticated technical systems.
+
+\subsection{Prior implementations of conversational controls}
+While the application of conversational AI for direct control of network hardware like routers appears relatively novel, related implementations exist in other domains. AI-powered chatbots are increasingly used for customer service, technical support, and e-commerce interactions, demonstrating the feasibility of task-oriented conversations \cite{parental_controls_value}. These systems often guide users through troubleshooting steps or help them find information, although they typically do not have direct control over the user's hardware.
+
+Closer to the target domain are AI-assisted CLI tools that translate natural language descriptions into specific command-line syntax \cite{nlp_cybersecurity}. These tools aim to help users leverage the power of the CLI without needing to memorize exact commands. However, they still operate within the CLI paradigm and typically require user confirmation before execution.
+
+The lack of prominent examples of general-purpose AI assistants directly managing consumer network hardware via standardized protocols suggests that this area is indeed under-researched. The work proposed in this study, leveraging MCP for AI-mediated router control, appears to be exploring a relatively new application space, moving beyond informational chatbots or command-line assistance towards direct, conversational system administration.
+
+\subsection{Usability studies of natural language for technical management}
+Existing literature focuses heavily on documenting the usability problems of traditional GUI and CLI interfaces for network management \cite{home_network_challenges}. There is a comparative lack of empirical usability studies specifically evaluating conversational interfaces for the purpose of technical system management.
+
+However, based on the capabilities of conversational AI (Section 2.2) and the identified failures of current interfaces (Section 2.1.3), several potential usability benefits can be hypothesized for a well-designed conversational system:
+
+\begin{enumerate}
+\item \textbf{Reduced Learning Curve:} Users could interact using familiar language instead of learning technical jargon or interface layouts;
+
+\item \textbf{Easier Access to Advanced Features:} Complex features hidden in deep menus could become accessible through simple natural language requests;
+
+\item \textbf{Contextual Explanations:} The AI could explain complex settings or security recommendations in understandable terms during the configuration process; and
+
+\item \textbf{Guided Troubleshooting:} The AI could lead users through diagnostic steps conversationally, interpreting technical results for them.
+\end{enumerate}
+
+Conversely, potential usability drawbacks must also be considered:
+
+\begin{enumerate}
+\item \textbf{Ambiguity and Misinterpretation:} Natural language can be imprecise, potentially leading to the AI misunderstanding the user's intent and executing incorrect or unintended commands;
+
+\item \textbf{Interaction Friction:} If the AI frequently misunderstands or requires excessive clarification, the conversational interaction could become frustrating and less efficient than a GUI for some tasks;
+
+\item \textbf{Discoverability Issues:} Unlike GUIs where users can browse menus to see available options, discovering the full range of capabilities controllable via a conversational interface might be challenging;
+
+\item \textbf{Verbosity:} For simple, frequent tasks, typing or speaking a full sentence might be slower than a single click in a GUI; and
+
+\item \textbf{Trust and Control:} Users might be hesitant to trust an AI with critical configurations, especially if the AI's decision-making process is opaque (addressed further below).
+\end{enumerate}
+
+Evaluating these potential benefits and drawbacks empirically is a key goal of research in this area.
+
+\subsection{User trust and delegation in AI-controlled systems}
+When an AI system moves beyond providing information to actively controlling physical or critical software systems, user trust becomes a paramount concern. Delegating control of a home router – the gateway to the internet and the central hub for connected devices – involves significant perceived risk. Network misconfigurations can lead to loss of essential connectivity, exposure to security threats, or inability to access work, entertainment, or smart home functionalities.
+
+Therefore, designing a conversational AI for router management requires careful consideration of factors that influence user trust and willingness to delegate control:
+
+\begin{enumerate}
+\item \textbf{Reliability and Accuracy:} The system must demonstrate consistent and accurate interpretation of user intent and flawless execution of the corresponding commands. Frequent errors or misunderstandings will quickly erode trust;
+
+\item \textbf{Transparency and Explainability:} Users are more likely to trust a system they understand. The AI should be able to explain what it is doing, why it is recommending a particular action or setting, and potentially how it arrived at that conclusion. Opaque "black box" behavior can breed suspicion;
+
+\item \textbf{Predictability:} The AI's responses and actions should be consistent and predictable for similar inputs and contexts. Unpredictable behavior makes it difficult for users to form a reliable mental model of the system and trust its operations;
+
+\item \textbf{User Control and Override:} Users must feel they are ultimately in control. This includes clear confirmation steps before executing potentially impactful commands, the ability to easily query the current configuration state, and straightforward mechanisms to halt, undo, or manually override AI actions; and
+
+\item \textbf{Robust Error Handling and Recovery:} Mistakes and communication failures will inevitably occur. The system's ability to detect errors, report them clearly to the user, and provide mechanisms for recovery (e.g., reverting to a previous configuration) is crucial for maintaining trust even when things go wrong.
+\end{enumerate}
+
+Building user trust in AI systems controlling technical infrastructure is arguably more challenging than in purely informational domains due to the higher stakes associated with errors. The potential for tangible negative consequences (loss of service, security breach) necessitates a design philosophy that prioritizes safety, transparency, reliability, and user agency. Research is needed to understand how users perceive these factors in the context of AI-mediated network management and to identify specific interface design patterns that effectively foster appropriate levels of trust and encourage confident delegation. The success of such systems hinges not only on their technical capabilities but critically on their ability to establish a trustworthy relationship with the user.
+
+\section{Model Context Protocol (MCP) Framework}
+The Model Context Protocol (MCP), introduced by Anthropic \cite{mcp_docs}, represents a specific framework designed to address the challenge of enabling large language models to interact securely and effectively with external systems and tools. As a relatively new protocol central to the proposed research, this section outlines its likely origins, design principles, architecture, security model, and potential applications.
+
+\subsection{Origins and design principles of MCP}
+MCP emerged directly from the recognition that the power of LLMs was fundamentally limited by their inability to access external, real-time information or take actions in the outside world \cite{mcp_docs}. While LLMs possess vast internal knowledge, they lack the mechanisms to query databases, call APIs, control devices, or perform computations beyond their built-in capabilities.
+
+The core goal of MCP is therefore to provide a standardized and secure communication channel through which AI models, such as Anthropic's Claude, can discover and utilize external "tools" \cite{mcp_docs}. These tools are essentially functions or services exposed by external systems – they could range from accessing a weather API, querying a database, executing code, to, as explored in this research, interacting with the management functions of a network router.
+
+Based on its intended purpose, several key design principles can be inferred for MCP:
+
+\begin{enumerate}
+\item \textbf{Standardization:} Providing a common protocol ensures interoperability between different AI models (supporting MCP) and various external tools (implementing MCP servers). This avoids the need for bespoke integrations for each AI-tool pair;
+
+\item \textbf{Security:} Given the potential for AI to control sensitive systems, security is paramount. MCP incorporates mechanisms for authentication (verifying identities) and authorization (controlling access rights) to ensure interactions are legitimate and restricted to permitted actions \cite{mcp_docs};
+
+\item \textbf{Structured Communication:} Interactions are likely based on well-defined message formats for requests and responses, clearly specifying the tool to be invoked, the required input parameters, and the expected output structure. This ensures clarity and reduces ambiguity;
+
+\item \textbf{Tool Discovery:} The protocol likely includes a mechanism for the AI client to discover the tools available on a specific MCP server and understand their capabilities (e.g., function descriptions, input/output schemas); and
+
+\item \textbf{Abstraction:} MCP abstracts the underlying implementation details of the tool. The AI interacts with the tool via the standardized MCP interface, without needing to know the specifics of the tool's internal workings or the hardware's native API.
+\end{enumerate}
+
+\subsection{Technical architecture and implementation approaches}
+MCP likely operates on a client-server model. The AI assistant (e.g., Claude) acts as the MCP client, initiating requests to use external tools. The external system that provides the tools (e.g., the server managing the ASUS router in this research) implements an MCP server \cite{mcp_docs}. This server listens for requests from the AI client, executes the corresponding tool function (which might involve interacting with a local device API like AsusRouter), and returns the result to the AI client via the MCP protocol.
+
+A crucial aspect is tool definition and discovery. MCP servers must define the tools they offer, likely using a structured format (e.g., JSON Schema, OpenAPI specification) that describes each tool's name, purpose, required input parameters (name, type, description), and the structure of the data it returns. The AI client would use a discovery mechanism (perhaps an initial handshake or a dedicated endpoint) to retrieve this list of available tools and their descriptions from the server. This allows the AI to understand which tools are available and how to use them.
+
+The typical interaction flow would proceed as follows:
+
+\begin{enumerate}
+\item A user poses a request to the AI assistant (e.g., "Show me all devices connected to my guest network").
+\item The AI analyzes the request and determines that fulfilling it requires using an external tool (e.g., a get\_guest\_network\_devices tool exposed by the router's MCP server).
+\item The AI (MCP client) constructs a standardized MCP request message, specifying the tool name and any necessary input parameters.
+\item The AI sends the MCP request to the appropriate MCP server.
+\item The MCP server receives the request, validates it, authenticates and authorizes the client, and invokes the corresponding tool function.
+\item The tool function executes (e.g., the MCP server uses the AsusRouter library to query the router for guest network devices).
+\item The tool function returns its result to the MCP server.
+\item The MCP server packages the result into a standardized MCP response message.
+\item The MCP server sends the response back to the AI (MCP client).
+\item The AI receives the response, processes the tool's output, and formulates a natural language response for the user (e.g., "The following devices are connected to your guest network: [list of devices]").
+\end{enumerate}
+
+\subsection{Security models in MCP implementations}
+Security is a foundational element of the MCP framework, designed to enable safe interaction between AI systems and potentially sensitive external tools \cite{mcp_docs}. Key security aspects likely include:
+
+\begin{enumerate}
+\item \textbf{Authentication:} Ensuring that both the AI client and the MCP server are who they claim to be is critical. Mutual authentication prevents unauthorized clients from accessing tools and ensures clients are connecting to legitimate servers. Standard mechanisms like API keys, OAuth 2.0 tokens, or potentially mutual TLS (mTLS) could be employed;
+
+\item \textbf{Authorization / Access Control:} Beyond authentication, MCP must control what actions an authenticated AI client is allowed to perform. This involves defining permissions or scopes for each tool and ensuring the AI client has the necessary grants before allowing tool execution \cite{mcp_docs}. For example, an AI might be granted permission to read router status but not to change critical security settings unless explicitly authorized. Role-based access control (RBAC) could also be implemented;
+
+\item \textbf{Data Security / Confidentiality:} Data exchanged between the AI client and the MCP server, which might include sensitive configuration details or user information, must be protected from eavesdropping. Communication should occur over encrypted channels, typically using TLS/HTTPS; and
+
+\item \textbf{Input Validation and Sanitization:} The MCP server has a responsibility to rigorously validate and sanitize all inputs received from the AI client before passing them to the underlying tool or hardware API. This helps prevent command injection attacks or other exploits resulting from malformed or malicious inputs.
+\end{enumerate}
+
+\subsection{Current applications and implementations}
+As a protocol introduced by Anthropic, MCP is relatively new and emerging. Its primary initial application appears to be enabling Anthropic's Claude models to interact with external tools defined by developers \cite{mcp_intro}.
+
+The potential use cases are broad, extending far beyond the router management scenario explored in this research. MCP could enable AI assistants to interact with virtually any system that can expose its functionality via an MCP server, including:
+
+\begin{enumerate}
+\item Querying databases or knowledge bases;
+\item Interacting with web services (e.g., booking flights, ordering food);
+\item Executing code in sandboxed environments;
+\item Controlling other IoT devices or smart home systems; and
+\item Accessing enterprise software systems.
+\end{enumerate}
+
+Given its novelty, the number of publicly documented implementations and extensive case studies may still be limited \cite{mcp_wandb}. The research described in Chapter 1, focusing on implementing an MCP server for ASUS routers, represents an early and specific example of applying this framework to hardware control, potentially serving as a valuable reference implementation for the community.
+
+MCP represents a significant architectural development aimed at overcoming a core limitation of current LLMs. By providing a standardized, secure protocol for AI models to leverage external tools, it creates a pathway for these models to move beyond information retrieval and generation into performing actions and interacting directly with external systems and the physical world. Its emphasis on standardization and security is crucial for enabling this powerful extension of AI capabilities in a responsible and scalable manner. The success and adoption of protocols like MCP could fundamentally change how users interact with complex systems, making AI assistants potent intermediaries for managing technology.
+
+\section{ASUS Router Management Systems}
+This research focuses specifically on implementing and evaluating an MCP server for ASUS routers. Understanding the capabilities, management interfaces, APIs, and security posture of this target platform is therefore essential. This section reviews the relevant aspects of ASUS router systems.
+
+\subsection{ASUS router architecture and capabilities}
+ASUS is a major manufacturer of consumer and prosumer networking equipment, known for producing routers that often incorporate a rich set of features appealing to both average users and enthusiasts. Typical capabilities relevant to the scope of this study include:
+
+\begin{enumerate}
+\item \textbf{Core Networking:} Standard routing, DHCP, DNS, NAT functions;
+\item \textbf{Wireless Management:} Configuration of Wi-Fi networks (SSIDs, passwords, encryption standards like WPA2/WPA3, channels, bandwidth) across multiple bands (2.4GHz, 5GHz, potentially 6GHz for Wi-Fi 6E/7 models). Support for guest networks;
+\item \textbf{Device Management:} Viewing lists of connected devices, potentially assigning static IPs or blocking devices;
+\item \textbf{Traffic Monitoring and QoS:} Basic traffic statistics, and often advanced Quality of Service (QoS) features for prioritizing specific types of traffic (e.g., gaming, streaming) or devices \cite{tplink_qos};
+\item \textbf{Security Features:} Built-in firewalls, intrusion prevention systems (often marketed as AiProtection, sometimes in partnership with security vendors like Trend Micro), VPN client and server functionality (OpenVPN, WireGuard, IPSec), content filtering, and parental controls;
+\item \textbf{System Information:} Access to hardware details, firmware version, system uptime, resource utilization (CPU, RAM), temperature sensors;
+\item \textbf{Diagnostics:} Tools like ping, traceroute, and potentially integrated network speed tests; and
+\item \textbf{Advanced Features:} Depending on the model, features like AiMesh (for creating mesh networks with other ASUS routers), USB port functionality (for network storage or printer sharing), gaming-specific optimizations (port forwarding presets, game acceleration), and customizable Aura RGB lighting effects.
+\end{enumerate}
+
+ASUS routers were likely chosen as the target platform for this research due to their popularity in the consumer market, their relatively advanced feature set which provides ample scope for AI-mediated control, and the existence of mechanisms (like the AsusRouter library) that allow for programmatic interaction, which is essential for building the MCP server bridge.
+
+\subsection{Current management interfaces and APIs}
+Users typically interact with ASUS routers through several interfaces:
+
+\begin{enumerate}
+\item \textbf{ASUSWRT Web Interface:} This is the primary graphical interface, accessed via a web browser. ASUSWRT is known for exposing a comprehensive range of settings and features, often more than typical ISP-provided routers. While powerful, its complexity can be daunting for non-expert users, mirroring the general usability challenges discussed in Section 2.1.3;
+
+\item \textbf{ASUS Router Mobile App:} ASUS provides a mobile application for iOS and Android devices. This app generally offers a simplified interface focused on common tasks like monitoring connected devices, basic Wi-Fi settings, parental controls, and running diagnostics. Consistent with the trend for mobile apps, it may not provide access to all the advanced configuration options available in the full web interface;
+
+\item \textbf{AsusRouter Library:} As explicitly mentioned in the research scope, the implementation relies on the AsusRouter library. This library likely acts as an unofficial client, providing a Pythonic interface to interact with the router. It probably achieves this by simulating web browser interactions with the ASUSWRT interface (web scraping), sending direct HTTP requests to internal API endpoints used by the web UI or mobile app, or possibly by leveraging SSH access if enabled on the router. This library serves as the crucial abstraction layer enabling the MCP server to communicate with the router's underlying systems without needing to reverse-engineer the protocols directly; and
+
+\item \textbf{Other Potential APIs:} While ASUS does not widely publicize official APIs for end-user router control, the web interface and mobile app themselves rely on internal APIs. Libraries like AsusRouter often leverage these undocumented or semi-documented APIs. Some ASUS routers might also expose standard protocols like SNMP or UPnP, though these might not cover the full range of management functions needed.
+\end{enumerate}
+
+\subsection{AsusRouter library functionality}
+The effectiveness of the proposed MCP server hinges directly on the capabilities exposed by the AsusRouter library. Based on the research objectives and scope, the library is expected to provide functions covering four main categories:
+
+\begin{enumerate}
+\item \textbf{Network Information Retrieval:} Functions to get data about the current network state, including lists of connected devices (with details like IP/MAC addresses, connection type), current wireless network settings (SSIDs, passwords, channels, encryption), real-time traffic statistics, WAN connection status and IP address, configured port forwarding rules, guest network configurations, physical Ethernet port status, and potentially a comprehensive network map showing device interconnections (especially relevant for AiMesh setups);
+
+\item \textbf{System Information Retrieval:} Functions to access information about the router hardware and software itself, such as model number, firmware version, CPU and RAM utilization, system temperature, uptime, AiMesh topology (if applicable), content filtering settings, LED indicator status, and configured VPN client/server connections;
+
+\item \textbf{Configuration Control:} Functions to actively modify router settings. The scope specifically mentions modifying wireless network settings (e.g., changing SSID, password, channel), controlling the router's status LED indicators, managing Aura RGB lighting effects (on compatible models), and initiating a router restart; and
+
+\item \textbf{Diagnostics:} Functions to trigger built-in diagnostic tools, specifically mentioning the capability to run network speed tests directly from the router itself.
+\end{enumerate}
+
+This library acts as the essential technical enabler, translating the standardized, high-level tool requests coming from the AI via MCP into the specific, often proprietary, interactions required to query and control the ASUS hardware. The breadth and reliability of this library directly determine the range and effectiveness of the AI-mediated management capabilities.
+
+\subsection{Security considerations for router management}
+While offering advanced features, ASUS routers are subject to the same security concerns as other network devices, compounded by their complexity and internet accessibility.
+
+\begin{enumerate}
+\item \textbf{General Router Vulnerabilities:} Like all complex software, router firmware can contain bugs and security flaws. Routers are frequent targets for automated scanning and exploitation attempts \cite{router_exploitable};
+
+\item \textbf{Specific ASUS Vulnerabilities:} ASUS routers have had documented critical vulnerabilities. A notable recent example involved an authentication bypass flaw (CVE-2025-2492, assuming typo for 2024/2023) affecting the AiCloud feature, allowing remote attackers unauthorized access \cite{secure_router}. Other vulnerabilities in ASUS firmware or associated services have been discovered and exploited over time. This underscores the importance of securing the target platform;
+
+\item \textbf{Firmware Updates:} Regularly updating the router firmware is crucial for patching known vulnerabilities. However, as discussed in Section 2.1.4, the usability of the update process can be a barrier for end-users. An AI interface could potentially simplify or automate this critical security task; and
+
+\item \textbf{API Security:} If the AsusRouter library interacts with internal APIs on the router, the security of those APIs is implicitly relied upon. Vulnerabilities in these underlying APIs could potentially be exploited via the library or the MCP server built on top of it. Secure coding practices and careful handling of authentication credentials within the MCP server and the library are vital.
+\end{enumerate}
+
+In summary, ASUS routers provide a relevant and capable platform for this research, offering a wide range of functions that could benefit from a more accessible management interface. However, they also embody the typical usability challenges and security risks associated with consumer networking equipment. The existence of a library like AsusRouter provides the necessary technical means for programmatic interaction. This context reinforces the motivation for the study: to leverage AI and MCP to create a more usable and secure management experience specifically tailored to the capabilities and challenges of popular hardware like ASUS routers, thereby addressing real-world problems faced by users of these devices.
+
+\section{Synthesis and Research Gap}
+This review of related literature has traversed several interconnected domains, from the historical evolution of router interfaces and their persistent usability challenges to the advancements in artificial intelligence and the technical requirements for integrating AI with hardware. Synthesizing these findings reveals a clear picture of the current landscape and highlights specific gaps that the present research aims to address.
+
+\subsection{Summary of current knowledge}
+The literature establishes several key points:
+
+\begin{enumerate}
+\item \textbf{Interfaces and Usability:} Router management interfaces have evolved graphically (CLI to Web UI to Mobile App) in an attempt to improve usability, but fundamental challenges remain. Non-expert users consistently struggle with the complexity, technical jargon, and opaque nature of network configuration \cite{home_network_challenges}. This leads to frustration, errors, and underutilization of device capabilities \cite{diagnostic_issues}. Remote management protocols like TR-069 address ISP operational needs but do not improve direct end-user interaction \cite{router_security_vulnerabilities};
+
+\item \textbf{Security Implications:} The documented usability failures have direct and severe security consequences. Interface complexity is a major contributor to widespread misconfigurations, the use of weak or default credentials, failure to apply critical firmware updates, and improper implementation of security features like encryption \cite{home_network_challenges}. Routers, including popular models like those from ASUS \cite{secure_router}, are consequently vulnerable and attractive targets for attackers \cite{router_exploitable};
+
+\item \textbf{AI/NLP Potential and Limitations:} Artificial intelligence, particularly LLMs and conversational interfaces, offers significant potential for simplifying complex technical tasks through natural language interaction and explanation \cite{nlp_cybersecurity}. However, standard AI models typically lack the ability to directly interact with external hardware, and applying them to control critical systems requires careful consideration of accuracy, safety, and user trust;
+
+\item \textbf{Integration Frameworks:} Connecting AI systems to hardware necessitates integration frameworks, often relying on APIs. Security, reliable cloud-to-local communication, and standardized protocols are crucial \cite{secure_router}. Emerging protocols like MCP aim to provide a standardized, secure way for AI assistants to utilize external tools, addressing a gap left by existing standards like TR-069 or basic IoT protocols;
+
+\item \textbf{ASUS Platform:} ASUS routers serve as a relevant and representative platform for this research, offering advanced features accessible via libraries like AsusRouter but also exhibiting the typical usability and security challenges found in consumer networking equipment \cite{secure_router}; and
+
+\item \textbf{User Experience Factors:} User experience in network management is hampered by poor mental models \cite{router_logs}, difficulty in troubleshooting \cite{router_logs}, and a lack of tools for understanding network behavior or making informed security decisions \cite{router_logs}. Evaluating new interfaces requires metrics beyond basic usability, encompassing configuration quality, feature utilization, and user trust.
+\end{enumerate}
+
+\subsection{Identification of research gaps}
+Based on the synthesis of current knowledge, several critical research gaps emerge:
+
+\begin{enumerate}
+\item \textbf{Lack of Effective User-Centric Management Interfaces:} Despite decades of evolution, there remains a persistent lack of router management interfaces that are simultaneously powerful, usable, and effective in guiding non-expert users towards secure and optimal configurations. Current user-facing approaches (Web UI, Mobile App) demonstrably fail to overcome the inherent complexity for many users \cite{home_network_challenges};
+
+\item \textbf{Limited Exploration of Conversational AI for Direct Hardware Control:} While conversational AI is increasingly used for information retrieval and simple transactions, its application for the direct, real-time configuration and management of critical network hardware like home routers is significantly underexplored. Key questions regarding the practical usability, safety, reliability, and user acceptance of such systems remain largely unanswered by empirical research; and
+
+\item \textbf{Need for Empirical Evaluation of Standardized AI-Hardware Integration Protocols:} Frameworks like MCP propose a standardized solution for bridging AI assistants with external tools and hardware \cite{mcp_docs}. However, as these protocols are relatively new, there is a scarcity of research demonstrating their practical implementation and rigorously evaluating their effectiveness, usability, and performance characteristics in real-world scenarios, particularly for complex tasks like network management.
+\end{enumerate}
+
+Combining these points, the primary research gap addressed by the study outlined in Chapter 1 is the lack of systematic investigation into the design, implementation, and empirical evaluation of a conversational AI interface, enabled by a standardized integration protocol (MCP), for managing consumer-grade network routers (specifically ASUS models). This investigation needs to assess the extent to which such an approach can mitigate the long-standing usability and security challenges faced by end-users, improve their ability to utilize router features effectively, and understand the resulting dynamics of user trust and interaction.
+
+\subsection{Positioning of the current study}
+This research positions itself directly within the identified gap. By designing, implementing, and evaluating an MCP server specifically for ASUS routers, enabling interaction via Anthropic's Claude AI assistant, the study provides:
+
+\begin{enumerate}
+\item A concrete implementation addressing the need for novel user-centric interfaces in network management;
+\item A practical case study exploring the application of conversational AI for direct hardware control in a critical consumer domain; and
+\item An empirical evaluation of the feasibility, performance, usability, and potential security benefits of using a standardized protocol (MCP) for AI-hardware integration.
+\end{enumerate}
+
+The findings aim to contribute empirical data and insights into the technical requirements, human factors, and overall viability of using AI-mediated conversational interfaces to overcome the persistent difficulties associated with traditional router administration.
+
+\subsection{Theoretical framework for the research}
+The research draws upon and integrates concepts from multiple disciplines, forming a multi-faceted theoretical framework:
+
+\begin{enumerate}
+\item \textbf{Human-Computer Interaction (HCI):} Core principles of usability engineering \cite{network_complexity_survey}, user-centered design (UCD), mental model theory \cite{router_logs}, conversational interface design principles, and interaction pattern analysis guide the design and evaluation of the AI interface;
+
+\item \textbf{Usable Security and Privacy:} The study is grounded in the principles of designing systems that are both secure and usable \cite{home_network_challenges}. It investigates how improving usability through a conversational interface can directly impact security behaviors and outcomes, addressing the human element often cited as the "weakest link" by potentially making secure practices more accessible;
+
+\item \textbf{Artificial Intelligence (AI):} Concepts from Natural Language Processing (NLP), the capabilities and limitations of Large Language Models (LLMs), techniques for dialogue management, and theories of Human-AI Interaction (HAI), particularly concerning user trust and delegation, inform the AI integration and interaction design; and
+
+\item \textbf{Network Systems and Security:} Knowledge of router architecture, network protocols (TCP/IP, Wi-Fi standards, DNS, DHCP), network management principles, API design, and common network security vulnerabilities \cite{router_password_study} provides the technical foundation for the system implementation and the context for evaluating its security implications.
+\end{enumerate}
+
+By integrating these theoretical perspectives, the research aims to provide a comprehensive understanding of the technical, usability, and security dimensions of AI-mediated network management.

@@ -1,0 +1,307 @@
+\chapter*{Appendix}
+\addcontentsline{toc}{chapter}{Appendix A. Source Code Repository}
+
+The full implementation of the deep learning models presented in this study—including QCNN, QCNN-SAM, TCNN, and TCNN-SAM—is available in the following GitHub repository:
+
+\url{https://github.com/shineamor/SP-colab-notebooks}
+
+This repository contains:
+\begin{enumerate}
+    \item Google Colab notebooks for all models
+    \item Preprocessing scripts for the Oxford Flowers 102 dataset
+    \item Model training, evaluation, and visualization routines
+    \item Generated outputs (PSNR/SSIM plots, comparison images)
+\end{enumerate}
+
+All experiments were conducted in Google Colab using TensorFlow and custom quaternion layers.
+
+\chapter*{Appendix B: MCP Tools Implementation}
+\label{app:mcp_tools}
+\addcontentsline{toc}{chapter}{Appendix B. MCP Tools Implementation}
+
+This appendix provides a comprehensive inventory of all Model Context Protocol (MCP) tools implemented for the ASUS Router integration. The tools are organized by functional category.
+
+\section*{Device Information Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_connected\_devices & Retrieves information about all devices connected to the router \\
+\hline
+get\_aimesh\_info & Gets information about AiMesh setup and node status \\
+\hline
+get\_boottime & Retrieves the router's boot time and calculates uptime \\
+\hline
+\end{tabular}
+
+\section*{Network Status Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_network\_status & Retrieves traffic statistics for all network interfaces \\
+\hline
+get\_wan\_status & Gets detailed WAN connection status and configuration \\
+\hline
+get\_wlan\_status & Retrieves detailed wireless network configuration \\
+\hline
+get\_guest\_wifi\_status & Gets guest WiFi network status and configuration \\
+\hline
+get\_ports\_status & Retrieves the status of physical network ports \\
+\hline
+get\_dsl\_status & Retrieves DSL connection status and line information \\
+\hline
+run\_speedtest & Initiates a speed test directly from the router \\
+\hline
+ping\_host\_from\_router & Pings a specified host from the router itself \\
+\hline
+\end{tabular}
+
+\section*{System Performance Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_system\_info & Retrieves comprehensive system information \\
+\hline
+get\_cpu\_ram\_usage & Gets CPU and RAM utilization statistics \\
+\hline
+get\_temperature & Retrieves temperature readings from various sensors \\
+\hline
+get\_firmware\_info & Gets firmware version and update availability information \\
+\hline
+check\_firmware\_updates & Triggers a check for new firmware updates \\
+\hline
+start\_firmware\_upgrade & Initiates a firmware upgrade if an update is available \\
+\hline
+\end{tabular}
+
+\section*{Network Security \& Management Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_parental\_control & Retrieves parental control configuration and rule settings \\
+\hline
+set\_parental\_control\_global\_state & Enables or disables Parental Controls feature globally \\
+\hline
+set\_parental\_control\_block\_all & Enables or disables the 'Block All Internet Access' feature \\
+\hline
+get\_port\_forwarding & Gets port forwarding rules and configuration \\
+\hline
+set\_port\_forwarding\_global\_state & Enables or disables Port Forwarding globally \\
+\hline
+\end{tabular}
+
+\section*{VPN Management Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_vpn\_config & Retrieves VPN client and server configuration status \\
+\hline
+get\_vpn\_fusion\_status & Gets VPN Fusion (VPNC) status and configurations \\
+\hline
+control\_openvpn\_client & Enables or disables a specific OpenVPN client profile \\
+\hline
+control\_openvpn\_server & Enables or disables a specific OpenVPN server \\
+\hline
+control\_wireguard\_client & Enables or disables a specific WireGuard client profile \\
+\hline
+control\_wireguard\_server & Enables or disables a specific WireGuard server \\
+\hline
+control\_vpn\_fusion\_client & Enables or disables a VPN Fusion client profile \\
+\hline
+\end{tabular}
+
+\section*{WiFi Management Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+set\_wifi\_settings & Configures wireless network settings \\
+\hline
+set\_wifi\_radio\_state & Enables or disables the radio for a specific WiFi band \\
+\hline
+\end{tabular}
+
+\section*{System Maintenance Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+reboot\_router & Initiates a router reboot \\
+\hline
+rebuild\_aimesh\_network & Triggers a rebuild of the AiMesh network \\
+\hline
+restart\_dns\_service & Restarts the DNS service on the router \\
+\hline
+restart\_httpd\_service & Restarts the router's web server \\
+\hline
+\end{tabular}
+
+\section*{LED \& Lighting Control Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_led\_status & Gets router LED status information \\
+\hline
+set\_led\_state & Turns router LEDs on or off \\
+\hline
+set\_aura\_lighting & Controls ASUS AURA RGB lighting effects \\
+\hline
+\end{tabular}
+
+\section*{Advanced Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Description} \\
+\hline
+get\_devicemap & Gets comprehensive device map information (raw data) \\
+\hline
+get\_router\_flags & Gets internal router flags and states \\
+\hline
+get\_vpn\_fusion\_client\_list\_raw & Gets the raw VPN Fusion client list string \\
+\hline
+\end{tabular}
+
+\chapter*{Appendix C: MCP Tool Test Cases}
+\label{app:mcp_test_cases}
+\addcontentsline{toc}{chapter}{Appendix C. MCP Tool Test Cases}
+
+This appendix provides the test cases used to evaluate each MCP tool, showing the exact prompts used.
+
+\section*{Test Prompts by Tool Category}
+{\small
+\subsection*{Device Information Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+get\_connected\_devices & Show me all devices connected to my network right now \\
+\hline
+get\_aimesh\_info & What's the status of my AiMesh network? Are all nodes connected? \\
+\hline
+get\_boottime & How long has my router been running since the last reboot? \\
+\hline
+\end{tabular}
+
+\subsection*{Network Status Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+get\_network\_status & What's my current network utilization across all interfaces? \\
+\hline
+get\_wan\_status & Show me my internet connection details and public IP address \\
+\hline
+get\_wlan\_status & What are my current WiFi settings for all bands? \\
+\hline
+get\_guest\_wifi\_status & Are any guest networks currently enabled on my router? \\
+\hline
+get\_ports\_status & Which physical ports on my router are currently active and what are their speeds? \\
+\hline
+get\_dsl\_status & What's my DSL connection quality and sync speed? \\
+\hline
+run\_speedtest & Run a speed test from my router to check my connection speed \\
+\hline
+ping\_host\_from\_router & Ping google.com from my router to check connectivity \\
+\hline
+\end{tabular}
+
+\subsection*{System Performance Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+get\_system\_info & Give me a complete system overview of my router \\
+\hline
+get\_cpu\_ram\_usage & What's the current CPU and RAM usage on my router? \\
+\hline
+get\_temperature & Is my router running hot? Show me all temperature readings \\
+\hline
+get\_firmware\_info & Check if there's a firmware update available for my router \\
+\hline
+check\_firmware\_updates & Force check for new firmware updates now \\
+\hline
+start\_firmware\_upgrade & Upgrade my router to the latest firmware \\
+\hline
+\end{tabular}
+
+\subsection*{Network Security \& Management Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+get\_parental\_control & Show me my current parental control settings and active rules \\
+\hline
+set\_parental\_control\_global\_state & Enable parental controls on my router \\
+\hline
+set\_parental\_control\_block\_all & Block all internet access for all devices right now \\
+\hline
+get\_port\_forwarding & List all my configured port forwarding rules \\
+\hline
+set\_port\_forwarding\_global\_state & Disable all port forwarding rules temporarily \\
+\hline
+\end{tabular}
+
+\subsection*{VPN Management Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+get\_vpn\_config & Show me the status of all my VPN configurations \\
+\hline
+get\_vpn\_fusion\_status & What's the current status of my VPN Fusion profiles? \\
+\hline
+control\_openvpn\_client & Connect to my OpenVPN client profile \#2 \\
+\hline
+control\_openvpn\_server & Turn off my OpenVPN server \\
+\hline
+control\_wireguard\_client & Connect to my WireGuard VPN \#1 \\
+\hline
+control\_wireguard\_server & Enable my WireGuard server to allow remote connections \\
+\hline
+control\_vpn\_fusion\_client & Disconnect from VPN Fusion profile unit 1 \\
+\hline
+\end{tabular}
+
+\subsection*{WiFi Management \& System Maintenance Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+set\_wifi\_settings & Change my 5GHz WiFi password to "NewSecurePassword2023!" \\
+\hline
+set\_wifi\_radio\_state & Turn off my 2.4GHz WiFi radio but leave 5GHz on \\
+\hline
+reboot\_router & Reboot my router now \\
+\hline
+rebuild\_aimesh\_network & My mesh network seems unstable, rebuild the AiMesh network \\
+\hline
+restart\_dns\_service & I'm having DNS issues, restart the DNS service \\
+\hline
+restart\_httpd\_service & The router admin page is sluggish, restart the HTTPD service \\
+\hline
+\end{tabular}
+
+\subsection*{LED, Lighting \& Advanced Tools}
+\begin{tabular}{|p{6cm}|p{9cm}|}
+\hline
+\textbf{Tool Name} & \textbf{Test Prompt} \\
+\hline
+get\_led\_status & Are my router LED lights currently on or off? \\
+\hline
+set\_led\_state & Turn off all the LED lights on my router for the night \\
+\hline
+set\_aura\_lighting & Set my router RGB lighting to static red at 80\% brightness \\
+\hline
+get\_devicemap & Show me the detailed devicemap data from my router \\
+\hline
+get\_router\_flags & Show me all internal router flags for debugging \\
+\hline
+get\_vpn\_fusion\_client\_list\_raw & Show me the raw VPN Fusion client list configuration string \\
+\hline
+\end{tabular}
+}

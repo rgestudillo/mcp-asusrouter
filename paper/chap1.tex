@@ -1,0 +1,124 @@
+\chapter{Introduction}
+\label{chap:typing}
+This chapter introduces the context of the study, its goal, and its aims. Specifically, it encompasses the rationale, objectives, significance, scope, and limitations of the research on utilizing large language models for network infrastructure management through the Model Context Protocol.
+
+\section{Background of the Study}
+In the contemporary digital landscape, home and small business network infrastructure has evolved significantly, transforming from simple internet connectivity devices to sophisticated systems offering advanced functionality \cite{smarthome_evolution}. Modern routers now serve as central hubs for network security, device management, performance optimization, and service delivery \cite{router_security_vulnerabilities}. The number of connected devices per household has surged, with the average US internet household having 17 connected devices in Q3 2023 \cite{parks_associates}, and global IoT devices projected to grow from 16 billion in 2023 to 39 billion by 2029 \cite{statista_devices}. This proliferation contributes to increased network complexity and an expanded attack surface \cite{iot_device_management}. Despite these technological advancements and increasing complexity \cite{network_complexity_survey}, router management interfaces have often remained technical administrative panels that require specialized knowledge to navigate effectively \cite{home_network_challenges}.
+
+The technical complexity of router management interfaces presents significant challenges in proper configuration, particularly for security settings \cite{wifi_security_settings}. This complexity contributes to security vulnerabilities, as many networks exhibit misconfigurations that could be exploited by malicious actors \cite{consumer_cybersecurity}. Router interfaces have not evolved at the same pace as network demands and the increasing number of IoT devices, creating a widening gap between functionality and usability \cite{iot_device_management}.
+
+Concurrent with these challenges in network management, artificial intelligence (AI) has made remarkable advances in natural language processing and understanding \cite{llm_explainability}. Large language models (LLMs) have demonstrated capabilities in transforming complex technical concepts into accessible explanations and can understand context, maintain coherent conversations, and translate user intent into structured actions \cite{llm_reasoning}. These capabilities suggest potential applications for bridging the technical knowledge gap in network management through conversational interfaces \cite{ai_networking}.
+
+However, a fundamental limitation has prevented the practical application of LLMs to direct hardware management tasks. Many AI assistants operate in isolated environments without the ability to directly interact with or control external systems \cite{irtf_ai_challenges}. This limitation creates a barrier to applying conversational AI to network management tasks that require direct router configuration and monitoring capabilities.
+
+The introduction of Anthropic's Model Context Protocol (MCP) represents a potential solution to this integration challenge \cite{mcp_intro}. MCP establishes a standardized framework enabling AI systems to interact with external data sources and control systems through defined tools and interfaces \cite{mcp_wandb}. The protocol defines secure, structured methods for AI assistants to read data from and write commands to external systems while maintaining appropriate authentication and access controls \cite{mcp_docs}.
+
+This technological advancement creates an opportunity to fundamentally transform router management by integrating the natural language capabilities of advanced AI assistants with direct control over network infrastructure \cite{ai_mediated_interface}. The convergence of these technologies could potentially address persistent technical challenges in network management, improving configuration quality, security practices, and the accessibility of advanced features through intuitive conversational interfaces mediated by AI.
+
+This research explores the technical implementation and performance evaluation of an MCP server for ASUS routers, enabling AI assistants like Claude to interact directly with router functions. By designing and testing this bridge between conversational AI and network hardware, the study seeks to understand the technical requirements, performance characteristics, and security considerations involved in AI-mediated network management.
+
+\section{Statement of the Problem}
+The management of home and small business network infrastructure presents significant technical challenges that persist despite technological advancements in router hardware \cite{soho_sdn}. Contemporary router systems offer sophisticated functionality, yet their administration interfaces often remain inaccessible to users without specialized networking knowledge, or may be too complex for efficient management \cite{home_network_challenges}. This research addresses this technical accessibility gap and examines how integration between artificial intelligence assistants and network hardware through standardized protocols might mitigate these challenges from a technical standpoint.
+
+Current router administration interfaces often require navigation through complex technical parameters, specialized networking terminology, and multi-layered configuration options \cite{home_network_challenges}. This complexity creates a barrier to effective network management, resulting in critical problems that impact network security, performance, and functionality.
+
+This research addresses the following specific problems:
+
+\begin{enumerate}
+\item Persistent security vulnerabilities in home and small business networks exist due to the technical complexity of security configuration interfaces \cite{consumer_cybersecurity}. This complexity leads to improper implementation of essential security practices, including weak password policies (86\% of users never change default admin passwords \cite{router_password_study}), default credential retention, inadequate encryption standards \cite{iot_security_challenges}, and irregular firmware updates (89\% never update firmware \cite{router_password_study}). These configuration deficiencies expose networks to unauthorized access, data interception, and potential exploitation in broader cybersecurity attacks \cite{home_wifi_security}. Routers have been identified as a significant percentage of infected devices \cite{router_exploitable} and a risky IT device category \cite{riskiest_devices};
+
+\item Significant underutilization or misconfiguration of advanced router capabilities persists in many networks \cite{parental_controls_value}. Modern routers incorporate sophisticated features including Quality of Service (QoS) controls \cite{tplink_qos}, access scheduling, bandwidth allocation, VPN functionality \cite{vpn_study}, and content filtering systems (parental controls) \cite{parental_controls_value}. However, these features often remain unused or improperly configured because the configuration processes can be complex \cite{router_guide}. This represents both inefficient resource allocation and missed opportunities for enhanced network performance and security;
+
+\item Troubleshooting difficulties arise when network issues occur \cite{diagnostic_issues}. Router diagnostic tools typically present raw technical data (e.g., router logs \cite{router_logs}) requiring interpretation based on specialized networking knowledge. Without this expertise or simpler diagnostic tools, identifying the source of connectivity problems, performance degradation, or device conflicts becomes challenging \cite{diagnostic_issues}; and
+
+\item The proliferation of Internet of Things (IoT) devices has dramatically increased network management complexity \cite{iot_device_management}. The growing number of connected devices in typical environments (average of 17 per US household in 2023 \cite{parks_associates}) creates complex ecosystems with varying connectivity requirements, security implications, and performance demands. Managing these heterogeneous device networks through traditional interfaces presents a significant technical burden \cite{iot_device_management}.
+\end{enumerate}
+
+While artificial intelligence assistants have demonstrated capabilities in simplifying complex tasks through natural language interaction \cite{llm_explainability}, they have been constrained by their inability to directly access and control network hardware \cite{irtf_ai_challenges}. This limitation has prevented the application of conversational AI to network management tasks, despite its potential to bridge the knowledge gap and improve network configuration outcomes.
+
+This research addresses the central question: To what extent can the implementation of a Model Context Protocol server for ASUS routers enable AI assistants to effectively interact with and manage network infrastructure from a technical standpoint, and how might this integration improve the technical accessibility, potential for enhanced security, and functional control of home and small business networks?
+
+By implementing and evaluating the technical performance of an MCP server that connects AI assistants with router hardware, this study examines the technical feasibility of AI-mediated router management and its potential impact on addressing the persistent challenges in contemporary network administration.
+
+\section{Objectives}
+This study aims to implement and evaluate the technical performance of a Model Context Protocol server for ASUS routers. The research is guided by the following objectives:
+
+\begin{enumerate}
+\item To develop and implement an MCP server that exposes router functionality through standardized tools, with proper error handling and security controls;
+
+\item To measure and analyze quantitative performance metrics including:
+    \begin{enumerate}
+        \item Response time and latency under various network conditions
+        \item Command execution accuracy and success rates
+        \item Error rates and types
+        \item System stability and resource utilization
+    \end{enumerate}
+
+\item To verify and validate the technical functionality through:
+    \begin{enumerate}
+        \item Automated testing of all implemented MCP tools
+        \item Verification of configuration changes
+        \item Error recovery mechanisms
+        \item Load testing under various conditions
+    \end{enumerate}
+\end{enumerate}
+
+These objectives collectively address both the technical implementation aspects of bridging AI systems with network hardware and the system-level implications of how this integration affects the technical accessibility and control of complex systems. The findings will contribute to understanding how standardized protocols like MCP can extend AI capabilities into hardware control while improving the technical manageability of complex systems.
+
+\section{Significance of the Study}
+
+The findings of this study offer valuable contributions across several fields, particularly in artificial intelligence, network security, and technology management:
+
+\textbf{Artificial Intelligence and Network Integration.} This research demonstrates a practical technical bridge between conversational artificial intelligence and network hardware management \cite{ai_mediated_interface}. While prior work has explored natural language interfaces for various applications \cite{nlp_cybersecurity}, the use of standardized protocols such as the Model Context Protocol (MCP) for direct AI control of critical infrastructure represents a novel advancement with broad implications \cite{mcp_developer}. The implementation provides a concrete example of how the theoretical capabilities of large language models \cite{llm_reasoning} can be extended beyond information retrieval into direct system control \cite{mcp_intro}, offering a technical foundation for further applications across diverse hardware platforms \cite{vpn_study}.
+
+\textbf{Network Security and Usability.} From a cybersecurity standpoint, the study addresses persistent vulnerabilities in home and small business networks \cite{consumer_cybersecurity}. Complex router interfaces have been identified as a major cause of widespread security misconfigurations \cite{wifi_security_settings}. By facilitating natural language-based interactions with security configurations, this research proposes an accessible method for reducing user error and improving the application of best security practices.
+
+\textbf{AI Systems Research and Protocol Design.} This study contributes to the body of work on extending AI functionality through standardized tool interfaces, particularly through the implementation of MCP \cite{mcp_intro}. The documented design strategies, performance characteristics, and security considerations offer practical insights for future research and development in AI integration \cite{ai_architecture_review}.
+
+\textbf{Network Equipment Development.} For manufacturers and software developers of networking hardware, the study offers practical significance. As router features continue to expand, managing these capabilities requires increasing technical expertise \cite{router_guide}. This research highlights how AI-driven, user-friendly interaction models can bridge the usability gap, helping non-expert users manage sophisticated configurations effectively.
+
+\textbf{IoT Ecosystem Management.} In light of the growing complexity of device ecosystems, especially in IoT-enabled homes and businesses, this study presents a promising direction for simplifying infrastructure management \cite{iot_device_management}. The conversational AI approach outlined herein can support more accessible, centralized control of interconnected systems.
+
+\textbf{Broader Technological Accessibility.} By addressing both usability and control, this research enhances accessibility to technical infrastructure for everyday users. The proposed framework provides a reference model for integrating AI into complex systems while ensuring secure and intuitive user interaction, thereby contributing to the democratization of technology management.
+
+\section{Scope and Limitations}
+This research focuses on the implementation and technical evaluation of a Model Context Protocol server specifically designed for ASUS routers, enabling interaction between Anthropic's Claude AI assistant and router management functions. The study encompasses both the technical implementation of the MCP server and the evaluation of its technical effectiveness in improving router management accessibility and control. 
+
+The implementation scope includes the development of a comprehensive set of MCP-compatible tools that expose router functions across four primary categories \cite{mcp_intro}:
+
+\begin{enumerate}
+\item \textbf{Network Information Tools.} Implementation of tools for retrieving detailed information about connected devices, wireless network configuration, traffic statistics, WAN connection details, port forwarding rules, guest network configuration, physical port status, and comprehensive device mapping;
+
+\item \textbf{System Information Tools.} Tools for accessing router hardware and software details, resource utilization metrics, temperature readings, uptime information, firmware version data, mesh network topology, content filtering settings, LED indicator status, and VPN configurations;
+
+\item \textbf{Configuration Control Tools.} Implementation of tools for modifying wireless network settings, controlling router LED indicators, managing AURA RGB lighting effects, and executing router restart commands; and
+
+\item \textbf{Diagnostic Tools.} Tools for running network speed tests directly from the router.
+\end{enumerate}
+
+The evaluation scope covers several dimensions of the implementation's technical effectiveness:
+
+\begin{enumerate}
+\item \textbf{Technical Performance Assessment.} Examination of response times, command accuracy, error handling, and system stability when processing AI-initiated requests under various network conditions \cite{ai_infrastructure};
+
+\item \textbf{System Capability Assessment.} Evaluation of the system's technical ability to execute complex router configurations and access diagnostic information through AI-mediated natural language commands, compared to the steps required via traditional administration panels; and
+
+\item \textbf{Feature Accessibility Impact.} Examination of whether AI-mediated access technically enables easier interaction with and control over advanced router functionality from a system perspective.
+\end{enumerate}
+
+The research focuses specifically on integration with ASUS routers using the AsusRouter API and Anthropic's Claude AI assistant through the Model Context Protocol framework \cite{mcp_intro}.
+
+This research also acknowledges several limitations that define the boundaries of its findings and applications:
+
+\begin{enumerate}
+\item \textbf{Hardware Specificity.} The implementation is designed specifically for ASUS routers using the AsusRouter API. The findings may not directly apply to routers from other manufacturers without significant adaptation to their respective APIs and feature sets;
+
+\item \textbf{AI Platform Limitation.} The study focuses on integration with Anthropic's Claude assistant through the Model Context Protocol. The performance characteristics, interaction patterns, and effectiveness may differ with other AI assistants that implement MCP differently or have different linguistic capabilities \cite{mcp_byteplus};
+
+\item \textbf{Feature Coverage.} While the implementation covers a broad range of router functions, it does not encompass all possible router capabilities. Some specialized or router-specific features may not be included in the implementation;
+
+\item \textbf{Testing Environment Constraints.} Security and performance testing will be conducted in controlled environments that may not fully replicate all possible real-world deployment scenarios and usage patterns; and
+
+\item \textbf{Evolving Technology Landscape.} The implementation relies on current versions of the ASUS router firmware, AsusRouter API, and Model Context Protocol specification \cite{mcp_developer}. Changes to any of these components may affect the implementation's functionality and relevance over time.
+\end{enumerate}
+These limitations present opportunities for future research to expand upon the findings by addressing broader hardware compatibility, extended feature coverage, larger-scale technical testing, and potentially incorporating comprehensive user experience evaluations in subsequent studies.

@@ -1,0 +1,634 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% UP MATH Department Graduate Thesis Document Style      %
+% adapted from NCSU thesis/dissertation template         %
+% Send comments, questions to Jose Maria Escaner IV      %
+% jlescaner@up.edu.ph                  Ver. 04.06.2008   % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\typeout{UPMath Graduate Thesis/Dissertation Option Ver. 04.06.2008 by jlescaner}
+
+% Define a null command for comments
+\long\def\comment#1{}
+
+\comment{
+
+  Example of using the thesis option:
+    \documentclass[upmath-thesis]{report}
+    \begin{document}
+    \title{How to Write Theses\\
+        With Two Line Titles}
+    \author{John Henry Candidate}
+
+    \beforepreface
+
+    \chapter*{Preface}
+        This thesis tells you all you need to know about...
+    \chapter*{Acknowledgements}
+        I would like to thank...
+
+    \tableofcontents
+    \listoftables
+    \listoffigures
+
+    \addchapter*{List of Symbols}
+    \begin{tabbing}
+         ...
+
+    \afterpreface
+
+    \chapter{Introduction}
+         ...
+    \chapter{Conclusions}
+         ...
+
+    \bibliographystyle{plain}
+    \bibliography{mybib}
+
+    \appendix
+    \chapter{A Long Proof}
+         ...
+    \chapter{And Another One}
+         ...
+    \end{document}
+
+Documentation:
+    This option
+      - sets the margins and interline spacing
+      - disallows page breaks at hyphens
+      - modifies figure captions to be \bf and \protect'ed
+      - allows line breaks in multiple citations
+      - formats the title page and produces a copyright page (optionally)
+      - Changes title of the bibliography to ``References''
+
+    The \beforepreface command creates the title page, the certification page
+    and a copyright page (optionally).  Then the user should put preface section(s),
+    using the \chapter*{section title} command, followed by
+    the desired tables of contents (e.g., \tableofcontents,
+    \listoftables, \listoffigures).  Additional preface sections (such
+    as a list of symbols) can be included after the tables of
+    contents--use \addchapter*{section title} for these sections to
+    include them in the table of contents.  The \afterpreface command
+    then sets things up to start the main body (on arabic page 1).
+
+    The following commands can control what goes in the front matter
+    material:
+
+    for the title and certification pages:
+    \title{thesis title}
+    \author{author's name}
+    \thesistype{e.g., thesis, dissertation, thesis proposal}
+        - Masteral Thesis if omitted
+    \degree{e.g., Bachelor of Science, Master of Science, Doctor of Philosophy}
+        - Masters of Science in Mathematics if omitted
+    \specialization{e.g., Operations Research, Actuarial Mathematics}
+        - optional
+    \university{university name}
+        - University of the Philippines if omitted
+    \location{location of university}
+        - Diliman, Quezon City
+    \dept{author's department/institute}
+        - Department of Mathematics if omitted
+    \college{author's college/unit}
+        - College of Science if omitted
+    \adviser{author's adviser}
+    \chairman{department/institute chair/director}
+    \submitdate{month year in which submitted}
+        - date LaTeX'd if omitted
+
+    for the copyright page:
+    \copyrightyear{year degree conferred (next year if submitted in Dec.)}
+        - year LaTeX'd (or next year, in December) if omitted
+    \copyrighttrue or \copyrightfalse
+        - produce or don't produce a copyright page (false by default)
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+% We need 1" margins for whitespace (i.e., to where page numbers or
+% headers begin) except on the binding edge, where it is 1 1/2"
+\oddsidemargin 0.25in \textwidth 6.25in \topmargin 0.00in
+\textheight 8.50in
+
+% Disallow page breaks at hyphens (this will give some underfull vbox's,
+% so an alternative is to use \brokenpenalty=100 and manually search
+% for and fix such page breaks)
+\brokenpenalty=10000
+
+% For some environments we switch back to single-spacing, also
+% provide \dsp in case you need double-spacing where single-spacing
+% is otherwise used.
+\def\ssp{\def\baselinestretch{1.00}\large\normalsize}
+\def\dsp{\def\baselinestretch{1.37}\large\normalsize}
+
+% To allow running page footers:
+\def\leftfoot#1{\gdef\@leftfoot{#1}}
+\def\rightfoot#1{\gdef\@rightfoot{#1}}
+
+% Default initialization of footers:
+\def\@leftfoot{}\def\@rightfoot{}
+
+% Plain page style (modified version from `report.sty')
+%   - modify \@oddfoot to contain footer information:
+\def\ps@plain{\let\@mkboth\@gobbletwo
+     \def\@oddhead{}%
+     \def\@oddfoot{\rm\makebox[.4\linewidth][l]\@leftfoot%
+       \hfil\thepage\hfil\makebox[.4\linewidth][r]\@rightfoot}%
+     \def\@evenhead{}\let\@evenfoot\@oddfoot}
+
+% Running headers (modified version from `report.sty'):
+%   - do not force running headers to uppercase
+%   - modify \@oddfoot and \@evenfoot to contain footer information
+%     (if two-sided, reverse left and right footers on even numbered pages):
+\if@twoside \def\ps@headings{\let\@mkboth\markboth
+\def\@oddfoot{\rm\@leftfoot\hfil\@rightfoot}%
+\def\@evenfoot{\rm\@rightfoot\hfil\@leftfoot}%
+\def\@evenhead{\rm \thepage\hfil \sl
+\leftmark}\def\@oddhead{\hbox{}\sl \rightmark \hfil
+\rm\thepage}\def\chaptermark##1{\markboth {\ifnum \c@secnumdepth
+>\m@ne
+ \@chapapp\ \thechapter. \ \fi ##1}{}}\def\sectionmark##1{\markright
+{\ifnum \c@secnumdepth >\z@
+ \thesection. \ \fi ##1}}}
+\else \def\ps@headings{\let\@mkboth\markboth
+\def\@oddfoot{\rm\@leftfoot\hfil\@rightfoot}%
+\def\@evenfoot{}\def\@oddhead{\hbox {}\sl \rightmark \hfil
+\rm\thepage}\def\chaptermark##1{\markright {\ifnum \c@secnumdepth
+>\m@ne
+ \@chapapp\ \thechapter. \ \fi ##1}}}
+\fi
+\def\ps@myheadings{\let\@mkboth\@gobbletwo
+\def\@oddhead{\hbox{}\sl\rightmark \hfil
+\rm\thepage}\def\@oddfoot{}\def\@evenhead{\rm \thepage\hfil\sl\leftmark\hbox
+{}}\def\@evenfoot{}\def\sectionmark##1{}\def\subsectionmark##1{}}
+
+% Floating Environments (modified version from `latex.tex'):
+%   - sets floats (e.g., figures and tables) to be single spaced
+\def\@xfloat#1[#2]{\ifhmode \@bsphack\@floatpenalty -\@Mii\else
+   \@floatpenalty-\@Miii\fi\def\@captype{#1}\ifinner
+      \@parmoderr\@floatpenalty\z@
+    \else\@next\@currbox\@freelist{\@tempcnta\csname ftype@#1\endcsname
+       \multiply\@tempcnta\@xxxii\advance\@tempcnta\sixt@@n
+       \@tfor \@tempa :=#2\do
+                        {\if\@tempa h\advance\@tempcnta \@ne\fi
+                         \if\@tempa t\advance\@tempcnta \tw@\fi
+                         \if\@tempa b\advance\@tempcnta 4\relax\fi
+                         \if\@tempa p\advance\@tempcnta 8\relax\fi
+         }\global\count\@currbox\@tempcnta}\@fltovf\fi
+    \global\setbox\@currbox\vbox\bgroup
+    \ssp\@normalsize                    % this line added
+    \boxmaxdepth\z@
+    \hsize\columnwidth \@parboxrestore}
+
+% Footnotes (modified version from `latex.tex'):
+%   - sets footnotes to be single spaced
+\long\def\@footnotetext#1{\insert\footins{\ssp\footnotesize % added \ssp
+    \interlinepenalty\interfootnotelinepenalty
+    \splittopskip\footnotesep
+    \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
+    \hsize\columnwidth \@parboxrestore
+   \edef\@currentlabel{\csname p@footnote\endcsname\@thefnmark}\@makefntext
+    {\rule{\z@}{\footnotesep}\ignorespaces
+      #1\strut}}}
+
+% Captions (modified version from `report.sty'):
+%   - put the figure number in boldface
+%   - protect the caption
+\long\def\@makecaption#1#2{\protect         % added \protect
+ \vskip 10pt
+ \setbox\@tempboxa\hbox{{\bf #1}: #2}           % added {\bf ...}
+ \ifdim \wd\@tempboxa >\hsize \unhbox\@tempboxa\par \else \hbox
+to\hsize{\hfil\box\@tempboxa\hfil}
+ \fi}
+
+% a version of itemize that has no space between the items
+\renewenvironment{itemize}{\begin{list}{$\bullet$}
+{\setlength{\rightmargin}{\leftmargin}
+\setlength{\itemsep}{0em}
+\setlength{\topsep}{0em}
+\setlength{\parsep}{0em}}}{\end{list}}
+
+% like the default itemize (i.e., extra space between items)
+\newenvironment{bigitemize}{\begin{list}{$\bullet$}
+{\setlength{\rightmargin}{\leftmargin}}}{\end{list}}
+
+%***************************************************************************************************
+%***** To make the captions centered and dotted leaders for chapter
+%***************************************************************************************************
+\def\@chapnum{\ \thechapter}
+
+% Modified the following so that "Chapter," "Appendix," or whatever appears
+% before the number in the table of contents.  3/10/93 tpk.
+
+\def\@chapter[#1]#2{
+  \refstepcounter{chapter}
+  \typeout{\@chapapp\space\thechapter.}
+  \addcontentsline{toc}{chapter}
+  {\protect\numberline{\@chapapp\space\thechapter.}#1}
+  \chaptermark{#1}
+  \addtocontents{lof}{\protect\addvspace{10pt}}
+  \addtocontents{lot}{\protect\addvspace{10pt}} \if@twocolumn
+  \@topnewpage[\@makechapterhead{#2}]
+  \else \@makechapterhead{#2}
+  \@afterheading \fi}
+
+% Modified \@makechapterhead to allow multi-line chapter titles.  Automatic
+% linebreaking is turned off because lines are to be broken for grammatical
+% sense, not for line filling purposes, according to the Thesis Office.
+
+\def\@makechapterhead#1{{ \parindent 0pt
+ \ifnum \c@secnumdepth >\m@ne
+% \lnspc{1.25}
+ \LARGE\bf\centerline{\@chapapp{}\@chapnum}
+ \par
+ \vskip 15pt
+ \fi
+ \begingroup
+ \setbox\@tempboxa\hbox{\begin{tabular}{c} \LARGE\bf #1\end{tabular}}
+ \ifdim \wd\@tempboxa >\hsize
+ \errmessage{Chapter title needs to have linebreaks (\noexpand\\)
+    inserted by the author}
+ \begin{tabular}{c} \LARGE\bf #1\end{tabular}
+ \else \hbox to\hsize{\hfil\box\@tempboxa\hfil}
+ \fi
+ \endgroup
+ \nobreak \vskip 38pt } }
+
+
+\def\@makeschapterhead#1{{ \parindent 0pt
+ \normalfont\LARGE\bf\centerline{#1}\par
+ \nobreak \vskip 40pt } }
+
+% 5/5/1992 kelliher.  The following added boldmath capability to chapter
+% titles in the table of contents.
+
+% All bolding removed from the table of contents.  Leaders added to all
+% entries in the tables.  3/10/93 tpk.
+
+\def\l@chapter#1#2{\addpenalty{-\@highpenalty}
+ \vskip 1.0em plus 1pt \@tempdima 5.3em
+ \begingroup
+ \parindent \z@ \rightskip \@pnumwidth
+ \parfillskip -\@pnumwidth %\bf\ifboldmathon\protect\boldmath\fi
+ \leavevmode \advance\leftskip\@tempdima \hskip -\leftskip #1\nobreak
+ \leaders\hbox{$\m@th \mkern \@dotsep mu.\mkern \@dotsep mu$}\hfill
+ \nobreak\hbox to\@pnumwidth{\hss #2}\par
+ \penalty\@highpenalty \endgroup}
+%\def\l@section{\@dottedtocline{1}{3em}{2.3em}}
+%\def\l@subsection{\@dottedtocline{2}{5.3em}{3.2em}}
+%\def\l@subsubsection{\@dottedtocline{3}{8.5em}{4.1em}}
+%\def\l@paragraph{\@dottedtocline{4}{11.5em}{5em}}
+%\def\l@subparagraph{\@dottedtocline{5}{13.5em}{6em}}
+%********************************************************************************************************
+%*****  End of this part
+%*****           (To make the captions centered and dotted leaders for chapter)
+%********************************************************************************************************
+% Thebibliography (modified version from `report.sty'):
+%   - change the title to `List of References'
+%   - go ahead and add it to the table of contents
+\def\thebibliography#1{\chapter*{List of References\@mkboth
+  {List of References}{List of References}}
+  \addcontentsline{toc}{chapter}{List of References}
+  \list{[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+    \advance\leftmargin\labelsep
+    \usecounter{enumi}}
+    \def\newblock{\hskip .11em plus .33em minus -.07em}
+    \sloppy\clubpenalty4000\widowpenalty4000
+    \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+
+% Table of Contents (modified version from `report.sty'):
+%   - change the title to `Table of Contents'
+%   - change to single space
+\def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{Table of Contents\@mkboth
+ {Table of Contents}{Table of Contents}}
+ {\@starttoc{toc}}\if@restonecol\twocolumn\fi}
+
+% List of Figures (modified version from `report.sty'):
+%   - change to single space
+%   - add to table of contents
+\def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{List of Figures\@mkboth
+ {List of Figures}{List of Figures}}{\@starttoc{lof}}\if@restonecol\twocolumn
+ \fi\addcontentsline{toc}{chapter}{List of Figures}}
+
+% List of Tables (modified version from `report.sty'):
+%   - change to single space
+%   - add to table of contents
+\def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{List of Tables\@mkboth
+ {List of Tables}{List of Tables}}{\dsp\@starttoc{lot}}\if@restonecol\twocolumn
+ \fi\addcontentsline{toc}{chapter}{List of Tables}}
+
+% Citations (modified version from `latex.tex'):
+%   - add space between multiple citations
+%   - do not box citations
+
+\def\@citex[#1]#2{\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi
+  \def\@citea{}\@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{, }\@ifundefined        % added space after `,'
+       {b@\@citeb}{{\bf ?}\@warning
+       {Citation `\@citeb' on page \thepage \space undefined}}%
+{\csname b@\@citeb\endcsname}}}{#1}}            % removed the \hbox
+
+% \author, \title, \adviser, and \chairman are defined in report;
+% here are the rest of the front matter defining macros
+
+\def\authorlast#1{\gdef\@authorlast{#1}}
+\def\authorfirst#1{\gdef\@authorfirst{#1}}
+\def\authorext#1{\gdef\@authorext{#1}}
+\def\dept#1{\gdef\@dept{#1}}
+\def\college#1{\gdef\@college{#1}}
+\def\university#1{\gdef\@university{#1}}
+\def\location#1{\gdef\@location{#1}}
+\def\thesistype#1{\gdef\@thesistype{#1}}
+\def\thesisdocument#1{\gdef\@thesisdocument{#1}}
+\def\degree#1{\gdef\@degree{#1}}
+\def\specialization#1{\gdef\@specialization{#1}}
+\def\submitmonth#1{\gdef\@submitmonth{#1}}
+\def\submityear#1{\gdef\@submityear{#1}}
+\def\adviser#1{\gdef\@adviser{#1}}
+\def\coadviser#1{\gdef\@coadviser{#1}}
+\def\reader#1{\gdef\@reader{#1}}
+\def\coreader#1{\gdef\@coreader{#1}}
+\def\chairman#1{\gdef\@chairman{#1}}
+\def\dean#1{\gdef\@dean{#1}}
+\def\copyrightyear#1{\gdef\@copyrightyear{#1}}
+\def\@title{ }
+\long\def\abs#1{\gdef\@abs{#1}}
+\long\def\acknowledge#1{\gdef\@acknowledge{#1}}
+\def\defensedate#1{\gdef\@defensedate{#1}}
+\def\@authorlast{}
+\def\@authorfirst{}
+\def\@authorext{}
+\def\@author{ }
+\def\@adviser{ }
+\def\@coadviser{ }
+\def\@reader{ }
+\def\@coreader{ }
+\def\@chairman{ }
+\def\@dean{ }
+\def\@dept{Institute of Mathematics}
+\def\@college{College of Science}
+\def\@university{The University of the Philippines}
+\def\@thesistype{}
+\def\@thesisdocument{}
+\def\@specialization{}
+\def\@location{Diliman, Quezon City}
+\def\@degree{}
+\def\@abs{}
+\def\@acknowledge{}
+\def\@defensedate{}
+\def\@submityear{}
+\def\@submitmonth{\ifcase\the\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space \number\the\year}
+% December theses should have the next year as the copyright year
+\ifnum\month=12
+    \@tempcnta=\year \advance\@tempcnta by 1
+    \edef\@copyrightyear{\number\the\@tempcnta}
+\else
+    \def\@copyrightyear{\number\the\year}
+\fi
+
+\newif\ifbothabsent \bothabsentfalse
+\newif\ifspecialize \specializefalse
+\newif\ifcoadvise \coadvisefalse
+\newif\ifcopyright \copyrightfalse
+\newif\ifauthorext \authorextfalse
+\newif\ifbiodata \biodatafalse
+\newif\ifacknowledge \acknowledgefalse
+
+\def\titlep{%
+    \thispagestyle{empty}%
+    \begin{center} \vspace*{0.25in}
+        {\bf \Large\uppercase\expandafter {\@title}}
+    \end{center}
+    \vfill
+    \begin{center}
+            \sc by\\
+        {\bf \sc \@authorfirst \ \@authorlast\ifauthorext , \@authorext\fi}
+    \end{center}
+    \vfill
+    \begin{center}
+        \sc A \lowercase\expandafter{\@thesistype}
+          submitted to the\\ {\@dept}\\
+          {\@college}\\
+        \lowercase\expandafter{\sc \@university}\\
+        \@location
+    \end{center}
+    \vfill
+    \begin{center}
+        \sc as partial fulf{}illment of the\\
+            requirements for the degree of\\
+        \lowercase\expandafter{\sc \@degree}\\
+        \ifspecialize(\@specialization)\fi
+    \end{center}
+    \vfill
+    \begin{center}
+            \sc \@submitmonth\ \@submityear\\
+    \end{center}
+    \vfill
+    \newpage}
+
+\def\copyrightpage{%
+    \null\vfill
+    \begin{center}
+        \Large\copyright\ Copyright \@copyrightyear\\
+        by\\
+        \@author\\
+    \end{center}
+    \vfill\newpage}
+
+\def\certification{%
+		\addtolength{\topmargin}{-0.5in}
+		\addtolength{\oddsidemargin}{0.75cm}
+		\addtolength{\evensidemargin}{0.75cm}
+		\addtolength{\textwidth}{-0.75cm}
+    \thispagestyle{empty}\dsp%
+    \begin{center} \sc \bf \@university \end{center}
+    \vspace{0.25cm}
+    \noindent This is to certify that this {\@thesistype} entitled
+    {\bf ``\@title"},
+    prepared and submitted by
+    {\bf \@authorfirst \ \@authorlast\ifauthorext , \@authorext\fi}
+    to fulfill part
+    of the requirements for the degree of {\bf
+    \@degree}, was successfully defended and approved on \@defensedate .
+    \vfill
+    \ifbothabsent\bothabsent\else\ifcoadvise\coadviserpresent\else\coadviserabsent\fi \fi
+    \vspace{0.25in}
+    \dsp
+    The {\@dept} endorses the acceptance of this {\@thesistype} as
+    partial fulfillment of the requirements for the degree of
+    {\@degree} \ifspecialize(\@specialization)\fi.
+    \vfill
+    \hspace*{2.5in}\ssp
+    \begin{tabular}{l}
+    \qquad \qquad {\bf \sc \underline{\@chairman}}\\
+    \qquad \qquad Director\\ \qquad \qquad {\@dept}
+    \end{tabular}
+    \vfill
+    \dsp
+    \noindent This {\@thesistype} is hereby officially accepted as partial
+    fulfillment of the requirements for the degree of {\@degree} \ifspecialize(\@specialization)\fi.
+    \vfill
+    \hspace*{2.5in}\ssp
+    \begin{tabular}{l}
+    \qquad \qquad {\bf \sc \underline{\@dean}}\\
+    \qquad \qquad Dean, {\@college}
+    \end{tabular}
+		\addtolength{\oddsidemargin}{-0.75cm}
+		\addtolength{\evensidemargin}{-0.75cm}
+		\addtolength{\textwidth}{0.75cm}
+		\addtolength{\topmargin}{0.5in}
+    \newpage}
+
+\def\bothabsent{
+		\begin{center}\ssp\begin{tabular}{l}{\bf \sc \underline{\@adviser}}\\ {\@thesisdocument}\ Adviser\end{tabular}
+    \hfill\begin{tabular}{l}{\bf \sc \underline{\@reader}}\\
+    {\@thesisdocument}\ Reader\end{tabular}\end{center}}
+
+\def\coadviserpresent{
+    \begin{center}\ssp\begin{tabular}{l}{\bf \sc \underline{\@adviser}}\\ {\@thesisdocument}\ Adviser\end{tabular}
+    \hfill\begin{tabular}{l}{\bf \sc \underline{\@coadviser}}\\
+    {\@thesisdocument}\ Co-Adviser\end{tabular}\end{center}
+    \vspace{0.25in}
+     \begin{center}\ssp{\bf \sc \underline{\@reader}}\\ {\@thesisdocument}\ Reader\end{center}}
+
+\def\coadviserabsent{
+    \begin{center}\ssp{\bf \sc \underline{\@adviser}}\\ {\@thesisdocument}\ Adviser\end{center}\vfill
+    \begin{center}\ssp\begin{tabular}{l}{\bf \sc \underline{\@reader}}\\ {\@thesisdocument}\ Reader\end{tabular}
+    \hfill\begin{tabular}{l}{\bf \sc \underline{\@coreader}}\\
+    {\@thesisdocument}\ Reader\end{tabular}\end{center}}
+
+
+\def\publicationpage{%
+\thispagestyle{empty}
+\begin{center}
+\includegraphics[height=1cm,width=1cm]{UP_Logo.png}\\
+{\bf \@university}
+\vfill
+{\@degree}\\
+\ifspecialize(\@specialization)\fi
+\vfill
+{\@authorfirst \ \@authorlast\ifauthorext , \@authorext\fi}
+\vfill
+{\bf \@title}
+%\end{center}
+\vfill
+\ifbothabsent
+{{ \underline{\@adviser}}\\ {\@thesisdocument}\ Adviser\\ \@dept\\ \@university
+\vfill
+{ \underline{\@reader}}\\ {\@thesisdocument}\ Reader\\ \@dept\\ \@university
+}
+\else\ifcoadvise
+{{ \underline{\@adviser}}\\ {\@thesisdocument}\ Adviser\\ \@dept\\ \@university
+\vfill
+{ \underline{\@coadviser}}\\ {\@thesisdocument}\ Co-Adviser\\ \@dept\\ \@university
+\vfill
+{ \underline{\@reader}}\\ {\@thesisdocument}\ Reader\\ \@dept\\ \@university
+}
+\else
+{{ \underline{\@adviser}}\\ {\@thesisdocument}\ Adviser\\ \@dept\\ \@university
+\vfill
+{ \underline{\@reader}}\\ {\@thesisdocument}\ Reader\\ \@dept\\ \@university
+\vfill
+{ \underline{\@coreader}}\\ {\@thesisdocument}\ Reader\\ \@dept\\ \@university
+}
+\fi
+\fi
+\vfill
+%\begin{center}
+Date of Submission:\\
+{\@submitmonth \; \@submityear}
+\vfill
+Permission is given for the following people to have access to this thesis:\\
+\begin{tabular}{|l|c|}
+\hline
+{\small Available to the general public} & Yes \\ \hline
+{\small Available only after consultation with author/adviser for thesis} & No \\ \hline
+{\small Available only to those bound by non-disclosure or confidentiality agreement} & No\\ \hline
+\end{tabular}
+\vspace{.5in}
+
+\underline{Signature of Student}
+\vspace{.5in}
+
+\underline{Signature of Thesis Adviser}
+\end{center}
+\newpage
+}
+
+
+\def\abstractpage{
+\chapter*{Abstract}
+\begin{center}{\large \bf \@title} \end{center}
+\bigskip
+
+\ssp
+\fontsize{12}{12}
+\ifcoadvise
+\noindent
+\begin{tabular}{ll}
+\@authorfirst\ \@authorlast\ \ifauthorext \ \@authorext\fi & \qquad Adviser: \\
+University of the Philippines, \@submityear & \qquad \@adviser \\ 
+& \qquad Co-Adviser: \\ & \qquad \@coadviser
+\end{tabular}
+\else
+\noindent
+\begin{tabular}{ll}
+\@authorfirst\ \@authorlast\ \ifauthorext \ \@authorext\fi & \qquad Adviser: \\
+University of the Philippines, \@submityear & \qquad \@adviser \\ 
+\end{tabular}
+\fi
+%\end{center} 
+\vspace{0.4in}
+
+\dsp
+\@abs 
+\addcontentsline{toc}{chapter}{Abstract}}
+
+\def\acknowledgepage{
+\chapter*{Acknowledgments} \vspace{0.3in} \dsp
+\@acknowledge 
+\addcontentsline{toc}{chapter}{Acknowledgments}}
+
+
+\def\beforepreface{%
+    \pagenumbering{roman}
+    \pagestyle{plain}
+    \titlep
+    \certification
+		\addtolength{\topmargin}{-0.25in}
+		\addtolength{\textheight}{1.25in}
+    \publicationpage
+    \addtolength{\topmargin}{0.25in}
+ 		\addtolength{\textheight}{-1.25in}
+    \include{publicannounce}
+    \ifbiodata\include{biodata}\fi
+    \ifcopyright\copyrightpage\fi}
+
+\def\addchapter*#1{%
+    \chapter*{#1}
+    \addcontentsline{toc}{chapter}{#1}}
+
+\def\afterpreface{\newpage
+    \pagenumbering{arabic}
+    \pagestyle{headings}}
+
+% Start with pagestyle{headings} in case front matter isn't processed
+\pagestyle{headings}
+
+% Make the thesis double-spaced
+\dsp
+
+\makeatother
+
+% END OF UPMATHBS.STY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

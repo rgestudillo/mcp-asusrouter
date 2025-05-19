@@ -1,0 +1,113 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% UP MATH Department Notations Style                     %
+% Send comments, questions to                            %
+% Joma Escaner                                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{Using UP Notations Style.}
+
+%Spacing
+\def\dsp{\def\baselinestretch{1.37}\large\normalsize}
+\def\ssp{\def\baselinestretch{1.00}\large\normalsize}
+
+%formats
+\long\def\comment#1{}
+\def\ds{\displaystyle}
+\def\beqn{\begin{equation}}
+\def\eeqn{\end{equation}}
+\def\enumb{\begin{enumerate}}
+\def\enume{\end{enumerate}}
+\def\bea*{\begin{eqnarray*}}
+\def\eea*{\end{eqnarray*}}
+
+% for definitions, theorems, lemma, corollary and propositions
+%\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\comment{
+\DeclareRobustCommand{\qed}{%
+  \ifmmode \mathqed
+  \else
+    \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
+    \quad\hbox{\qedsymbol}%
+  \fi
+}
+\let\QED@stack\@empty
+\let\qed@elt\relax
+\newcommand{\pushQED}[1]{%
+  \toks@{\qed@elt{#1}}\@temptokena\expandafter{\QED@stack}%
+  \xdef\QED@stack{\the\toks@\the\@temptokena}%
+}
+\newcommand{\popQED}{%
+  \begingroup\let\qed@elt\popQED@elt \QED@stack\relax\relax\endgroup
+}
+\def\popQED@elt#1#2\relax{#1\gdef\QED@stack{#2}}
+\newcommand{\qedhere}{%
+  \begingroup \let\mathqed\math@qedhere
+    \let\qed@elt\setQED@elt \QED@stack\relax\relax \endgroup
+}
+\providecommand{\qedsymbol}{$\Box$}
+\newcommand{\mathqed}{\quad\hbox{\qedsymbol}}
+
+\def\linebox@qed{\hfil\hbox{\qedsymbol}\hfilneg}
+\newenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item[\hskip\labelsep
+        \itshape
+    #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\providecommand{\proofname}{Proof}
+\endinput
+}
+
+%greatest integer function
+\def\gif#1{[\kern-.25em{|}\kern+.15em #1 \kern+.10em |\kern-.20em{]}}
+%parentheses for sets
+\def\set#1{\lt\{ #1\ \rt\}}
+%parentheses
+\def\paren#1{\lt( #1 \rt)}
+%derivative of y wrt x
+\def\yprime{\frac{dy}{dx}}
+%indention
+\def\indent{\hspace{18pt}}
+
+\def\i{\item}
+%reals
+\def\R{{\rm l}\kern-.15em{\rm R}}
+\def\Rn{{\rm l}\kern-.15em{\rm R^N}}
+\def\C{{\rm l}\kern-.53em{\rm C}}
+%complex
+\def\d#1{\partial\:#1}
+
+\def\lt{\left}
+\def\rt{\right}
+\def\half{\frac{1}{2}}
+
+%peso sign
+\def\peso{{\rm P}\raisebox{2.5pt}{\kern-.74em{=}}}
+
+%actuarial symbols
+\def\engol#1{_{\overline{#1\;}\kern-.11em{|}}}
+\def\oe{{{e} \raisebox{6.5pt}{\kern-.30em\tiny{o}}}}
+\def\upper#1{\raisebox{6.5pt}{\kern-.40em\tiny{#1}}}
+\def\engolupper#1#2{\engol{#1}\raisebox{6.5pt}{\kern-.65em\tiny{#2}}\kern.65em}
+\def\xbar{\overline{x}}
+\def\ybar{\overline{y}}
+\def\Abar{\overline{A}}
+\def\abar{\overline{a}}
+\def\xy{\overline{xy}}
+
+%example
+\def\example#1{\noindent{\bf Example #1:}}
+\def\examples{\noindent{\bf Examples:}}
+\def\exercises{\noindent{\bf Exercises:}}
+%inverse trigonometric
+\def\Arctan{{\rm{Arctan}}}
+\def\Arcsin{{\rm{Arcsin}}}
