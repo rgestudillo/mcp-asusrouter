@@ -1,13 +1,15 @@
 \chapter{Methodology}
 \label{chap:methodology}
-This chapter presents the methodology for implementing and evaluating a Model Context Protocol (MCP) server designed for ASUS routers. The primary focus is on developing a system that enables AI assistants to securely access and control router functionality through structured tools, measuring its performance, and validating its functionality through automated testing.
-An overview of the methods undertaken is presented in Figure \ref{fig:methodology-overview}. This illustrates the systematic workflow from initial setup through implementation and evaluation phases, addressing server implementation, performance assessment, and validation testing.
+An overview of the methods undertaken is presented in Figure \ref{fig:methodology-overview}. This illustrates the systematic workflow from initial setup through implementation and evaluation phases, addressing server implementation, and performance assessment.
 \begin{figure}[h]
 \centering
-% [PLACEHOLDER IMAGE: Methodology workflow diagram showing the systematic process flow from initial setup through implementation and evaluation phases, including hardware configuration, MCP server development, tool implementation, and performance testing stages]
+\fbox{%
+  \includegraphics[width=0.9\linewidth]{methodology-overview.png}%
+}
 \caption{Overview of the Methodology Workflow}
 \label{fig:methodology-overview}
 \end{figure}
+
 \section{Implementation Environment and Artifact Description}
 The technical implementation of the MCP server was conducted within a specific hardware and software environment designed to replicate a typical home or small office network setup.
 \subsection{Hardware Artifact}
@@ -24,12 +26,6 @@ Key Python Libraries used in the implementation:
 The MCP server's architecture is designed around the fastmcp framework, exposing router functionalities as callable tools for an AI assistant. It operates as a service that listens for incoming MCP requests, processes them by calling the appropriate asusrouter functions, and returns the results in the MCP format. Security considerations, such as using HTTPS for communication with the router and implementing input validation within the tools, are integrated into the design.
 \section{MCP Tool Development and Mapping}
 The process of developing the MCP tools involved identifying relevant ASUS router functionalities accessible via the asusrouter library and mapping them to standardized Model Context Protocol tools.
-\begin{figure}
-\centering
-\includegraphics[width=1\linewidth]{architecture.png}
-\caption{MCP Tool Mapping Process and Architecture}
-\label{fig:mcp-mapping}
-\end{figure}
 \subsection{asusrouter Library}
 The asusrouter library provides an asynchronous API wrapper that abstracts the complexities of direct HTTP requests to the router's web interface backend.
 \begin{enumerate}
@@ -54,14 +50,13 @@ The mapping process addressed the challenges of abstracting complex network task
 \end{enumerate}
 A comprehensive summary of the MCP tool implementation is provided in Appendix \ref{app:mcp_tools}.
 \section{Technical Evaluation Methodology}
-This section describes the procedures for quantitatively measuring the technical performance metrics of the MCP server and its tools, focusing on response time, command accuracy, error rates, and system stability.
+This section describes the procedures for quantitatively measuring the technical performance metrics of the MCP server and its tools, focusing on response time, command accuracy and error rates
 \subsection{Performance Metrics}
 The key performance indicators (KPIs) for the MCP server's technical evaluation are:
 \begin{enumerate}
 \item \textbf{Response Time:} The duration between an MCP request being sent to the server and the corresponding response being received, measured for each implemented tool call;
 \item \textbf{Command Accuracy:} The percentage of configuration or action-oriented tool calls that successfully achieve the intended state change on the router;
-\item \textbf{Error Rates:} The frequency of failed tool calls, categorized by error type (e.g., connection errors, API errors, validation errors, rate limit errors); and
-\item \textbf{System Stability:} The ability of the MCP server and the router API to maintain consistent performance and availability under load, including monitoring the router's CPU and memory usage.
+\item \textbf{Error Rates:} The frequency of failed tool calls, categorized by error type (e.g., connection errors, API errors, validation errors, rate limit errors)
 \end{enumerate}
 \subsection{Test Cases}
 A comprehensive set of test cases was designed to cover the functionality of each implemented MCP tool:
@@ -102,7 +97,6 @@ The quantitative data undergo analysis through descriptive statistics and system
 
 \item \textbf{Error Frequency Analysis:} Computation of aggregate and tool-specific error rates, categorized by error typology
 
-\item \textbf{Resource Utilization Profiling:} Correlation analysis between server/router resource consumption metrics and test execution phases
 \end{enumerate}
 \subsubsection{Command Accuracy Evaluation}
 Quantitative assessment of configuration application success rates based on verification outcomes, with particular focus on identifying specific configuration parameters exhibiting reduced reliability.
@@ -112,7 +106,7 @@ Systematic classification and frequency analysis of logged errors to establish c
 This chapter has detailed the methodology for developing and evaluating an MCP server for ASUS routers. The approach encompasses the technical implementation, performance measurement, and validation testing required to meet the research objectives:
 \begin{enumerate}
 \item The implementation environment, MCP server architecture, and tool development process provide a framework for developing a robust MCP server with proper error handling and security controls;
-\item The technical evaluation methodology, with its focus on performance metrics, test cases, and network conditions, establishes procedures for measuring response time, command accuracy, error rates, and system stability; and
+\item The technical evaluation methodology, with its focus on performance metrics, test cases, and network conditions, establishes procedures for measuring response time, command accuracy, and error rates;
 \item The automated testing framework, verification procedures, and error pattern examination support the verification and validation of the technical functionality through comprehensive testing under various conditions.
 \end{enumerate}
 The results of applying this methodology will provide empirical evidence regarding the technical feasibility and performance characteristics of using the Model Context Protocol to bridge AI assistants with network hardware.

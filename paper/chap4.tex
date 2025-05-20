@@ -63,7 +63,7 @@ Configuration Parameter Complexity & Many router settings required complex, inte
 These challenges highlight the practical considerations when implementing AI-hardware integration systems. The solutions developed demonstrate that with appropriate design patterns and error handling, stable and reliable integration is achievable despite the undocumented nature of consumer router APIs.
 
 \section{Technical Performance Evaluation}
-The MCP server's technical performance was evaluated according to the methodology outlined in Chapter 3. This section presents the quantitative results of these evaluations, focusing on response time, command accuracy, error rates, and system stability.
+The MCP server's technical performance was evaluated according to the methodology outlined in Chapter 3. This section presents the quantitative results of these evaluations, focusing on response time, command accuracy, and error rates.
 
 \subsection{Response Time Analysis}
 Response time measurements were collected across all 23 implemented tools under various network conditions and load scenarios. Figure \ref{fig:response-times} shows the distribution of response times by tool category.
@@ -145,26 +145,6 @@ Analysis of rate limit errors showed that they occurred consistently when more t
 
 Connection errors were most common during tests with simulated network congestion, highlighting the importance of robust error handling and retry logic in real-world deployments where network conditions may be less than ideal.
 
-\subsection{System Stability Assessment}
-The system stability was evaluated through extended operation tests under various load conditions. Table \ref{tab:stability-results} summarizes the key findings from these evaluations.
-
-\begin{table}[htbp]
-\caption{System Stability Evaluation Results}
-\label{tab:stability-results}
-\begin{tabular}{|p{3.5cm}|p{4cm}|p{7cm}|}
-\hline
-\textbf{Test Scenario} & \textbf{Duration} & \textbf{Observations} \\ \hline
-Continuous Light Load & 72 hours & No degradation in performance; consistent response times throughout \\ \hline
-Periodic Heavy Load & 48 hours & Memory usage on MCP server increased by 18\% after 48 hours; no memory leaks detected in router \\ \hline
-Varied Request Patterns & 24 hours & No correlation between request patterns and system stability \\ \hline
-Extended Idle Periods & 24 hours & Connection reestablishment succeeded after idle periods up to 12 hours \\ \hline
-Repeated Configuration Changes & 12 hours & No observed degradation in router performance after 500+ configuration changes \\ \hline
-\end{tabular}
-\end{table}
-
-Resource utilization monitoring showed that the MCP server maintained consistent performance with minimal resource requirements (less than 200MB RAM and negligible CPU usage during idle periods). The ASUS router showed increased CPU utilization during API calls (15-25\% above baseline), but this returned to normal levels between requests with no cumulative impact.
-
-The stability assessment demonstrates that the implemented MCP server is robust for extended operation, with no memory leaks or performance degradation observed during the testing period. The system successfully recovered from all error conditions without manual intervention, suggesting good resilience for real-world deployment.
 
 \section{Discussion}
 The results presented in the preceding sections demonstrate the technical feasibility and performance characteristics of the MCP server implementation for ASUS routers. This section discusses the implications of these findings in the context of the research objectives and broader technology landscape.
@@ -176,22 +156,10 @@ The successful implementation and evaluation of the MCP server provides strong e
 \item \textbf{Performance Viability:} The sub-second response times achieved for most operations (excluding inherently time-consuming tasks like speed tests) demonstrate that the system can support interactive use without introducing significant latency.
 \item \textbf{Command Accuracy:} The high success rates for configuration commands (97-100\%) show that the MCP server can reliably translate AI requests into correct router configurations.
 \item \textbf{Error Resilience:} The low overall error rate (3.2\%) and successful handling of various error conditions demonstrate that the system can operate reliably in real-world conditions.
-\item \textbf{System Stability:} The long-duration testing confirms that the MCP server implementation is stable for extended operation, a crucial requirement for production deployment.
 \end{itemize}
 
 These findings confirm that the technical foundations for AI-mediated router management are sound. The asusrouter library, despite its "Alpha" status, provides a sufficient API abstraction layer to build reliable router control tools, and the fastmcp framework effectively bridges this API with the MCP protocol expected by AI assistants like Claude.
 
-\subsection{Performance Considerations and Limitations}
-While the overall performance of the MCP server implementation is strong, the evaluation revealed several important considerations and limitations:
-
-\begin{itemize}
-\item \textbf{Concurrent Request Handling:} The degradation in performance beyond 8 concurrent requests indicates a scaling limitation that would need to be addressed for deployments serving multiple simultaneous users.
-\item \textbf{Rate Limiting:} The observed rate limiting behavior in the router API (approximately 15 requests per 5-second window) represents a constraint that must be managed through request batching or queueing.
-\item \textbf{Router Resource Impact:} The increased CPU utilization during API calls (15-25\% above baseline) suggests that intensive MCP server usage could potentially impact router performance for its primary networking functions.
-\item \textbf{Firmware Dependency:} The patches required to accommodate the specific router firmware highlight the dependency on firmware versions, which could complicate maintenance across firmware updates.
-\end{itemize}
-
-These considerations do not undermine the overall feasibility of the approach but highlight important design factors for production implementations. Particularly for consumer-grade hardware like the ASUS RT-AX57 Go, careful attention to resource utilization and request pacing is necessary to ensure that the MCP server's operation does not degrade primary network functions.
 
 \subsection{Security Implications}
 The implementation and evaluation process revealed several important security implications for AI-mediated router management:
@@ -230,4 +198,3 @@ Based on the implementation results and performance evaluation, several promisin
 
 These future directions could build upon the solid foundation established by the current implementation, extending its capabilities and addressing the limitations identified during evaluation.
 
-In conclusion, the results of this implementation and evaluation demonstrate that AI-mediated router management through standardized protocols like MCP is technically feasible, performing with good response times, high command accuracy, and system stability. While several performance considerations and security implications must be addressed for production deployment, the overall findings support the viability of this approach for bridging the gap between conversational AI and network hardware control.
